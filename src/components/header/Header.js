@@ -4,10 +4,10 @@ import awsugn_icon from "../../assets/new_awsugn.png";
 
 import MenuIcon from "@mui/icons-material/Menu";
 
-import HiddenMenu from "./hidden-menu";
-import Navbar from "./navbar";
-import SignIn from "./signin";
-import Register from "./register";
+import HiddenMenu from "./HiddenMenu";
+import Navbar from "./Navbar";
+import SignIn from "./Signin";
+import Register from "./Register";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [signin, setSignin] = useState(false);

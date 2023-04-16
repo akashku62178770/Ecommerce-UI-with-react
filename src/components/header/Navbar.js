@@ -5,13 +5,13 @@ import LoggedIn from "./Loggedin";
 //   signin,
 //   register,
 // }) => {
-    const Navbar = () => {
+const Navbar = ({ signin, register }) => {
   const navLinkStyles = ({ isActive }: any) => {
     return {
       color: isActive ? "black" : "#876156",
     };
   };
-// 
+  //
   return (
     <nav className=" hidden flex-1 justify-between items-center md:flex ">
       <ul className="flex gap-5 lg:gap-16">
@@ -46,15 +46,15 @@ import LoggedIn from "./Loggedin";
       <div className="flex gap-5 lg:gap-10">
         <button
           className="text-brown hover:scale-110 hover:text-darkBrown transition text-md lg:text-lg"
-        //   onClick={signin}
-          onClick={console.log('signin')}
+          onClick={signin}
+          // onClick={console.log('signin')}
         >
           Sign in
         </button>
         <button
           className="bg-darkBrown hover:scale-105 px-10 py-2 font-roboto text-white rounded-lg font-bold hover:bg-brown transition text-lg "
-        //   onClick={register}
-          onClick={console.log("register")}
+          onClick={register}
+          // onClick={console.log("register")}
         >
           Register
         </button>

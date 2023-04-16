@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { FC } from "react";
+import { NavLink } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
 
-const hidden_menu = () => {
+
+const HiddenMenu = ({closeMenu, signin, register}) => {
   const navLinkStyles = ({ isActive }: any) => {
     return {
       color: isActive ? "black" : "#876156",
@@ -59,4 +62,4 @@ const hidden_menu = () => {
   );
 };
 
-export default hidden_menu
+export default HiddenMenu
