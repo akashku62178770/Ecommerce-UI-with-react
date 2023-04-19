@@ -16,15 +16,15 @@ const Hero = () => {
       <div className="flex flex-col gap-10 justify-center items-center md:items-start">
         <div className="flex flex-col justify-center items-center md:items-start h-[22rem] gap-[1rem] w-[100vw]">
           <div className="w-[20rem] sm:w-[25rem] xl:w-[55rem] px-[0%] 2xl:px-[10%] ">
-            <p className="font-roboto text-[4rem] text-white md:ml-[5rem] pb-shadow">
+            <h1  className="font-roboto text-[4rem] text-white md:ml-[5rem] pb-shadow">
               Pay Less
-            </p>
-            <p className="font-roboto text-brown text-[4rem] md:ml-[5rem] lg:ml-[15rem] drop-shadow-lg pw-shadow">
+            </h1 >
+            <h1  className="font-roboto text-brown text-[4rem] md:ml-[5rem] lg:ml-[15rem] drop-shadow-lg pw-shadow">
               Wear
-            </p>
-            <p className="font-roboto text-[4rem] text-white md:ml-[5rem] lg:ml-[20rem] lg:w-[20rem] drop-shadow-lg pb-shadow">
+            </h1 >
+            <h1  className="font-roboto text-[4rem] text-white md:ml-[5rem] lg:ml-[20rem] lg:w-[20rem] drop-shadow-lg pb-shadow">
               The Best<span className="text-LightBrown">!</span>
-            </p>
+            </h1 >
           </div>
           <img
             src={herobg}

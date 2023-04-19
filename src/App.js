@@ -6,6 +6,10 @@ import SideLinks from "./components/SideLinks";
 import Browse from "./pages/Browse";
 import ProductDetails from "./pages/ProductDetails";
 import Aboutus from "./pages/Aboutus";
+import Register from "./components/header/Register";
+import Ordering from "./pages/Ordering";
+import OrderPage from "./pages/OrderPage";
+import OrderDetails from "./pages/OrderDetails";
 
 function App() {
   return (
@@ -19,10 +23,6 @@ function App() {
       <BrowserRouter>
       <Header/>
       <SideLinks/>
-        {/* <Routes> */}
-          {/* <Route path="/" element={<Layout />} />
-          <Route index element={<Home />} /> */}
-        {/* </Routes> */}
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="browse">
@@ -35,6 +35,10 @@ function App() {
             {/* <Route index={false} path="search" element={<SearchPage />} /> */}
           </Route>
           <Route path="/aboutus" element={<Aboutus />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/ordering" element={<Ordering />} />
+          <Route path="/orderpage" element={<OrderPage />} />
+          <Route path="/orderdetails" element={<OrderDetails />} />
           <Route path="/product-detail" element={<ProductDetails />} />
         </Routes>
       </BrowserRouter>

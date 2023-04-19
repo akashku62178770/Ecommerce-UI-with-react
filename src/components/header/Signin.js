@@ -10,7 +10,7 @@ import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import Loader from "../Loader";
 import { statusActions } from "../../redux/statusSlice";
 
-const Signin = ({ cancle }) => {
+const Signin = ({ cancle, register }) => {
   const [showPassword, setShowPassword] = useState(false);
   const status = useAppSelector((state) => state.status);
   const dispatch = useAppDispatch();
@@ -26,7 +26,7 @@ const Signin = ({ cancle }) => {
     onSubmit: async (values, { resetForm }) => {
       dispatch(statusActions.setIsLoading());
       await axios
-        .post("http://api.awsugn.biz/auth/jwt/create", {
+        .post("https://api.awsugn.biz/auth/jwt/create", {
           username: values.username,
           password: values.password,
         })
@@ -111,7 +111,10 @@ const Signin = ({ cancle }) => {
           </Link>
           <button className="bg-darkBrown hover:scale-105 px-10 py-2 font-roboto text-white rounded-lg font-bold hover:bg-brown transition text-lg ">
             Sign In
-          </button>
+          </button> 
+          {/* <button onClick={register} className="bg-darkBrown hover:scale-105 px-10 py-2 font-roboto text-white rounded-lg font-bold hover:bg-brown transition text-lg ">
+            Or Create Account
+          </button> */}
           <Link to={""} className="text-brown hover:text-darkBrown">
             Or Create Account
           </Link>

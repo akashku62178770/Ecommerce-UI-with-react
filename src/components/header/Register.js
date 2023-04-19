@@ -31,7 +31,8 @@ const Register = ({cancleRegister}) => {
     validationSchema: Yup.object({
       username: Yup.string().required("Username required!"),
       firstname: Yup.string().required("First name required!"),
-      middlename: Yup.string().required("Middle name required!"),
+      // middlename: Yup.string().required("Middle name required!"),
+      middlename: Yup.string(),
       lastname: Yup.string().required("Last name required!"),
       email: Yup.string()
         .email("Invalid email format")
@@ -91,13 +92,15 @@ const Register = ({cancleRegister}) => {
         gender: values.gender,
         phone_number: `+${phone}`,
       };
-      await fetch("http://api.awsugn.biz/auth/users", {
+      await fetch("https://api.awsugn.biz/auth/users", {
         method: "POST",
         body: JSON.stringify(bodyData),
         headers: { "Content-Type": "application/json" },
       })
         .then((response) => {
           console.log(response.json());
+          console.log( "Registration successful");
+          
         })
         .catch((error) => {
           console.log(error);
@@ -297,6 +300,7 @@ const Register = ({cancleRegister}) => {
             {status.loading && <Loader />}
           </div>
           <button
+            type="submit"
             className="bg-darkBrown hover:scale-105 px-10 py-2 font-roboto text-white rounded-lg font-bold hover:bg-brown transition text-lg disabled:scale-100 disabled:bg-disabled disabled:cursor-not-allowed"
             disabled={!agree ? true : false}
           >

@@ -1,15 +1,28 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import ProdDetail from "../components/proDetail";
 import { HabeshaDress } from "../models/habesha-dress";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Related from "../components/related";
 import Footer from "../components/Footer";
+import axios from "axios";
 
-const ProductDetails = () => {
+const ProductDetails = ({id}) => {
   const location = useLocation();
   const dresses = location.state;
   console.log(dresses);
+  useEffect(() => {
+    const fetchDresses = async () => {
+      await axios("https://api.awsugn.biz/clothes/{id}")
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    };
+    fetchDresses();
+  }, []);
 
   return (
     <>
@@ -29,7 +42,7 @@ const ProductDetails = () => {
           </h2>
           <hr className="text-brown mt-2" />
           <h2 className="text-brown text-xl">
-            Quantity: <span className="text-sm text-black pl-5">5</span>
+            Quantity: <span className="text-sm text-black pl-5">6</span>
           </h2>
           <h2 className="text-brown text-xl">
             Rented: <span className="text-sm text-black pl-5">1 time</span>

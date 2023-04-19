@@ -35,3 +35,21 @@ div .loader {
 .carousel {
   text-align: center;
 }
+
+.fa-stack[data-count]:after{
+  position:absolute;
+  right:1%;
+  top:2%;
+  content: attr(data-count);
+  font-size:40%;
+  padding:.6em;
+  border-radius:999px;
+  border-color: #876156;
+  line-height:.75em;
+  color: rgb(133, 74, 74);
+  /* background:rgba(158, 101, 101, 0.85); */
+  background:white;
+  text-align:center;
+  min-width:2em;
+  font-weight:bold;
+}

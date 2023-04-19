@@ -14,9 +14,10 @@ const Latest = () => {
   const [dresses, setDresses] = useState([]);
   useEffect(() => {
     const fetchDresses = async () => {
-      await axios("http://api.awsugn.biz/clothes/")
+      await axios("https://api.awsugn.biz/clothes/")
         .then(function (response) {
-          console.log(response);
+          console.log("response", response);
+          setDresses(response.data.results)
         })
         .catch(function (error) {
           console.log(error);
@@ -39,8 +40,22 @@ const Latest = () => {
         View All
       </Link>
       <div className="flex flex-wrap justify-center mt-12 px-5 gap-10">
-        {HabeshaDress.map((dress, index) => (
+        {/* {HabeshaDress.map((dress, index) => (
           <Card index={index} dress={dress} />
+        ))} */}
+        {dresses.map((dress, index) => (
+          <div>
+            {/* <img
+              src={dress.images[0].image}
+              alt={`occa_dress ${dress.id}`}
+              className="w-[450px]"
+            /> */}
+              <Card
+              index={index}
+              image={dress.images[0].image}
+              dress={dress}
+            />
+          </div>
         ))}
       </div>
       {/* <div className="flex justify-center">

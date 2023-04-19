@@ -6,6 +6,7 @@ import footerOval from "../assets/footer_ellipse.png";
 import * as Yup from "yup";
 import ReCAPTCHA from "react-google-recaptcha";
 import axios from "axios";
+import PhoneInput from "react-phone-input-2";
 
 const Footer = () => {
   // const verifyToken = async (token: string) => {
@@ -26,7 +27,7 @@ const Footer = () => {
   //   return result;
   // };
   const [isVerified, setIsVerified] = useState(false);
-
+  const [phone, setPhone] = useState("");
   const handleVerify = (token: any) => {
     if (token) {
       setIsVerified(true);
@@ -39,6 +40,8 @@ const Footer = () => {
     initialValues: {
       firstname: "",
       lastname: "",
+      email: "",
+      phone: "",
       message: "",
     },
     validationSchema: Yup.object({
@@ -86,24 +89,58 @@ const Footer = () => {
             onSubmit={formik.handleSubmit}
           >
             <div className="px-10 flex justify-center sm:justify-between gap-4">
-              <input
-                type="text"
-                name="firstname"
-                placeholder="first name"
-                className="sm:w-[15rem] sm:h-[3rem] w-[9rem] h-[2.5rem]  text-brown outline-none border border-brown px-3 rounded-md"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.firstname}
-              />
-              <input
-                type="text"
-                placeholder="last name"
-                name="lastname"
-                className="sm:w-[15rem] sm:h-[3rem] w-[9rem] h-[2.5rem] text-brown outline-none border border-brown px-3 rounded-md"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.lastname}
-              />
+              {/* <div className="column"> */}
+                <div className="flex-row gap-2">
+                  <input
+                    type="text"
+                    name="firstname"
+                    placeholder="first name"
+                    className="sm:w-[15rem] sm:h-[3rem] w-[9rem] h-[2.5rem]  text-brown outline-none border border-brown px-3 rounded-md"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.firstname}
+                  />
+                  <input
+                    type="text"
+                    placeholder="last name"
+                    name="lastname"
+                    className="sm:w-[15rem] sm:h-[3rem] w-[9rem] h-[2.5rem] text-brown outline-none border border-brown px-3 rounded-md"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.lastname}
+                  />
+                </div>
+                <div className="flex-row gap-2">
+                  <input
+                    type="email"
+                    placeholder="email"
+                    name="email"
+                    className="sm:w-[15rem] sm:h-[3rem] w-[9rem] h-[2.5rem] text-brown outline-none border border-brown px-3 rounded-md"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.email}
+                  />
+                  <PhoneInput
+                    country={"et"}
+                    inputStyle={{
+                      borderColor: "brown",
+                      height: "3.5rem",
+                      width: "20rem",
+                      marginLeft: "0",
+                    }}
+                    onChange={(phone) => {
+                      setPhone(phone);
+                    }}
+
+                    // value={}
+                    // onChange={(phone) => this.setState({ phone })}
+                  />
+                  <p className="text-red">{error}</p>
+                  {/* <p className="text-orange mb-10">
+               Make sure to include country code (+251...)
+             </p> */}
+                </div>
+              {/* </div> */}
             </div>
             <div className="flex item-center justify-between px-10">
               <textarea

@@ -8,10 +8,21 @@ import HiddenMenu from "./HiddenMenu";
 import Navbar from "./Navbar";
 import SignIn from "./Signin";
 import Register from "./Register";
+import { getToken } from "../../services/localStorageService";
+
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [signin, setSignin] = useState(false);
   const [register, setRegister] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+
+  // const { access_token } = getToken();
+  const access_token = 1356431688;
+  console.log("token:", access_token);
+
+  const setActive = () => {
+    setIsActive(true);
+  };
   const openMenu = () => {
     setIsOpen(true);
   };
@@ -42,12 +53,11 @@ const Header = () => {
         />
         <Navbar signin={signInClicked} register={registerClicked} />
         <button className="block md:hidden" onClick={openMenu}>
-          <MenuIcon className="text-4xl text-brown" />
+          Menu: <MenuIcon className="text-4xl text-brown" />
         </button>
 
         <div
-          className={`${
-            isOpen ? "block" : "hidden"
+          className={`${isOpen ? "block" : "hidden"
           } h-[100vh]  top-0 right-0 w-[60%] bg-white z-30 animate-sliderightmenu fixed`}
         >
           <HiddenMenu
@@ -56,7 +66,7 @@ const Header = () => {
             register={registerClicked}
           />
         </div>
-      </header>{" "}
+      </header>
     </>
   );
 };

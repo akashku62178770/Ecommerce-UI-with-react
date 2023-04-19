@@ -1,17 +1,41 @@
 import React, { FC, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Fade } from "react-slideshow-image";
 import { HabeshaDress } from "../models/habesha-dress";
+import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 
-const Card = ({index, dress}) => {
+const Card = ({ id, index, image, dress }) => {
   const [isOverImg, setIsOverImg] = useState(false);
   // const [src, setSrc] = useState<number | null>(null); i'll see
   const [src, setSrc] = useState(null);
+  const [cartButtonStatus, setCartButtonStatus] = useState(false);
   const navigate = useNavigate();
 
-  const bookClicked = () => {};
+  const addClicked = (dress) => {
+    console.log(dress);
+    const cartData = [
+      {
+        'product': {
+          "id": dress.id, 
+          "title": dress.title
+        },
+        "user": {
+          "id": 1
+      }
+    }
+    ];
+    let cartString = JSON.stringify(cartData);
+    localStorage.setItem('cartDAta', cartString);
+  };
+
+  // for reference
+  
+
   return (
-    <div className="flex flex-col gap-2  w-[16rem] mb-10 hover:border-2 border-brown/80 transition-all px-2 rounded-md py-2 hover:shadow-xl">
+    <div
+      id={id}
+      className="flex flex-col gap-2  w-[16rem] mb-10 hover:border-2 border-brown/80 transition-all px-2 rounded-md py-2 hover:shadow-xl"
+    >
       <div
         className="slide-container w-[15rem] cursor-pointer"
         onMouseEnter={() => {
@@ -23,7 +47,9 @@ const Card = ({index, dress}) => {
           setIsOverImg(false);
         }}
         onClick={() => {
-          navigate(`/browse/${dress.id}`, { state: HabeshaDress });
+          console.log("onClick");
+          // navigate(`/browse/${dress.id}`, { state: HabeshaDress });
+          navigate(`/browse/${id}`, {});
         }}
       >
         <Fade
@@ -34,33 +60,44 @@ const Card = ({index, dress}) => {
           duration={1500}
           pauseOnHover={false}
         >
-          {HabeshaDress.map((fadeImage, i) => (
+          {/* {HabeshaDress.map((fadeImage, i) => (
             <div className="each-fade w-[15rem]" key={i}>
               <div className="image-container ">
                 <img src={fadeImage.image} className="object-fill w-[15rem]" />
               </div>
             </div>
-          ))}
+          ))} */}
+          <div className="w-[15rem]">
+            <div className="image-container ">
+              <img src={image} className="object-fill w-[15rem]" />
+            </div>
+          </div>
         </Fade>
       </div>
       <h1 className="font-yatra  text-2xl text-center text-darkBrown">
-        {dress.name}
+        {dress.title}
       </h1>
       <p className="text-center text-xl font-roboto text-brown ">
-        {dress.size}
+        Quantity: {dress.quantity}
       </p>
       <p className="text-center font-light font-montserrat text-brown text-xl">
-        <s>{dress.oldPrice} Birr</s>
+        <s>{dress.sale_price} Birr</s>
       </p>
 
-      <p className="text-center  text-3xl text-darkBrown">{dress.price} Birr</p>
+      <p className="text-center  text-3xl text-darkBrown">
+        {dress.rent_price} Birr
+      </p>
       <div className="flex justify-center">
         <button
-          className="bg-darkBrown hover:bg-brown  text-white py-3 w-[10rem] rounded-lg transition font-bold text-xl mb-10"
-          onClick={bookClicked}
+          className="bg-darkBrown hover:bg-brown  text-white py-3 w-[10rem] rounded-lg transition font-bold text-xl mb-10 mx-5"
+          type="button"
+          onClick={addClicked(dress)}
         >
-          BOOK
+          Add to Cart
+          <i className="fa-solid fa-cart-plus ms-2"></i>
         </button>
+        {/* <AddShoppingCartOutlinedIcon/> */}
+        {/* <FontAwesomeIcon icon="fa-solid fa-cart-plus" /> */}
       </div>
     </div>
   );

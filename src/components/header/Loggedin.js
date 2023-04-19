@@ -2,6 +2,7 @@ import React from "react";
 
 import cart_icon from "../../assets/cart.png";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 const LoggedIn = () => {
   return (
     <div className="flex gap-5 lg:gap-10">
@@ -15,7 +16,14 @@ const LoggedIn = () => {
         </div>
       </button>
       <div className="flex items-center gap-2">
-        <p className="text-darkBrown">[Username]</p>
+        {/* <p className="text-darkBrown">[Username]</p> */}
+        {/* <NotificationsIcon className="text-darkBrown text-4xl" >
+        
+        </NotificationsIcon> */}
+        <span className="fa-stack fa text-brown" data-count="28">
+          <i className="fa fa-circle fa-stack-2x"></i>
+          <i className="fa fa-bell fa-stack-1x fa-inverse"></i>
+        </span>
         <AccountCircleIcon className="text-darkBrown text-4xl" />
       </div>
     </div>
