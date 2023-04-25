@@ -1,13 +1,22 @@
-import React, { FC } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import LoggedIn from "./Loggedin";
 import { getToken } from "../../services/localStorageService";
 import ellipse from "../../assets/Ellipse.png";
+import { CartContext, UserContext } from "../../Context";
 // const Navbar: FC<{ signin: () => void; register: () => void }> = ({
 //   signin,
 //   register,
 // }) => {
 const Navbar = ({ signin, register }) => {
+  const userContext = useContext(UserContext)
+  const {cartData, setCartData} = useContext(CartContext)
+  const [isOpen, setIsOpen] = useState(false);
+  if (cartData==null) {
+    var cartItems = 0
+  } else {
+    cartItems = cartData.length
+  }
   const { access_token } = getToken();
   // const access_token = 12346843168;
   const navLinkStyles = ({ isActive }: any) => {
@@ -15,6 +24,7 @@ const Navbar = ({ signin, register }) => {
       color: isActive ? "black" : "#876156",
     };
   };
+  
   //
   return (
     <>
@@ -78,7 +88,7 @@ const Navbar = ({ signin, register }) => {
                 Register
               </button> */}
             </div>
-            <LoggedIn />
+            <LoggedIn cartLength={cartData? cartData.length: 0}/>
           </nav>
         </>
       ) : (

@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { CartContext, UserContext } from "../Context";
 
 const OrderPage = () => {
+  const userContext = useContext(UserContext)
+  const {cartData, setCartData} = useContext(CartContext)
+  console.log(cartData[1])
   return (
     <>
-  
-  
       <header
         className="flex-container h-[15vh] p-4"
         style={{ backgroundColor: "#FFFAFA" }}
@@ -75,21 +77,18 @@ const OrderPage = () => {
             </tr>
           </tbody>
         </table>
-       
       </div>
       <div className="flex gap-5 padding-10 my-10 justify-center ">
-      <button className="bg-darkBrown h-[10vh] w-[30vh] px-5 py-2  text-white rounded-lg font-bold hover:bg-brown transition text-lg  text-center"
-        
-      >
-        <div className="items-center gap-2 relative">
-          <Link to="/orderDetails" className="">
-          <p className="font-yatra" style={{fontSize: 28}}>Load More</p>
-          </Link>
-        </div>
-      </button>
-        </div>
-      
-    
+        <button className="bg-darkBrown h-[10vh] w-[30vh] px-5 py-2  text-white rounded-lg font-bold hover:bg-brown  text-lg  text-center">
+          <div className="items-center gap-2 relative">
+            <Link to="/orderDetails" className="">
+              <p className="font-yatra" style={{ fontSize: 28 }}>
+                Load More
+              </p>
+            </Link>
+          </div>
+        </button>
+      </div>
     </>
   );
 };

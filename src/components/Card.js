@@ -1,56 +1,106 @@
-import React, { FC, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Fade } from "react-slideshow-image";
 import { HabeshaDress } from "../models/habesha-dress";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
+import { UserContext, CartContext } from "../Context";
 
-const Card = ({ id, index, image, dress }) => {
+const Card = ({ index, image, dress }) => {
   const [isOverImg, setIsOverImg] = useState(false);
   // const [src, setSrc] = useState<number | null>(null); i'll see
   const [src, setSrc] = useState(null);
   const [cartButtonStatus, setCartButtonStatus] = useState(false);
   const navigate = useNavigate();
+  const {cartData, setCartData} = useContext(CartContext);
+  useEffect(() => {
+    // addClicked()
+    // console.log("useEffect")
+    // var id = dress.id;
+    // checkProductInCart(id)
+  }, []);
 
-  const addClicked = (dress) => {
-    console.log(dress);
-    const cartData = [
-      {
-        'product': {
-          "id": dress.id, 
-          "title": dress.title
-        },
-        "user": {
-          "id": 1
-      }
+  function checkProductInCart(product_id) {
+    var previousCart = localStorage.getItem("cartData");
+    var cartJson = JSON.parse(previousCart);
+    if (cartJson != null) {
+      cartJson.map((cart) => {
+        if (cart != null && cart.dress.id == product_id) {
+          setCartButtonStatus(true);
+        }
+      });
     }
-    ];
-    let cartString = JSON.stringify(cartData);
-    localStorage.setItem('cartDAta', cartString);
+  }
+
+  const addClicked = () => {
+    console.log("dress:", dress.id);
+    var previousCart = localStorage.getItem("cartData");
+    var cartJson = JSON.parse(previousCart);
+
+    // console.log(dress);
+    var cartData = {
+      product: {
+        dress: dress,
+        // id: dress.id,
+        // title: dress.title,
+        // image: dress.image,
+        // quantity: dress.quantity,
+        // rent_price: dress.rent_price,
+        // num_of_time_rented: dress.num_of_time_rented,
+      },
+      user: {
+        id: 1,
+      },
+    };
+
+    if (cartJson != null) {
+      cartJson.push(cartData);
+      var cartString = JSON.stringify(cartJson);
+      localStorage.setItem("cartData", cartString);
+      setCartData(cartJson);
+    } else {
+      var newCartList = [];
+      newCartList.push(cartData);
+      var cartString = JSON.stringify(newCartList);
+      localStorage.setItem("cartData", cartString);
+    }
+    setCartButtonStatus(true);
   };
 
   // for reference
-  
+  // const cartRemoveButtonHandler = () => {
+  //   var previousCart = localStorage.getItem("cartData");
+  //   var cartJson = JSON.parse(previousCart);
+  //   cartJson.map((cart, index) => {
+  //     if(cart != null && cart.product.id == productData.id){
+  //       delete cartJson[index]; // not tthis
+  //       cartJson.splice(index, 1);
+  //     }
+  //   });
+  //   var cartString = JSON.stringify(cartJson);
+  //   localStorage.setItem("cartData", cartString);
+  //   setCartButtonStatus(false);
+  //   setCartData(cartJson);
+  // }
 
   return (
-    <div
-      id={id}
-      className="flex flex-col gap-2  w-[16rem] mb-10 hover:border-2 border-brown/80 transition-all px-2 rounded-md py-2 hover:shadow-xl"
-    >
+    <div key={index} className="flex flex-col gdressap-2  w-[16rem] mb-10 hover:border-2 border-brown/80 transition-all px-2 rounded-md py-2 hover:shadow-xl">
       <div
+        
         className="slide-container w-[15rem] cursor-pointer"
         onMouseEnter={() => {
           setSrc(index + 1);
           setIsOverImg(true);
+          console.log("entered");
         }}
         onMouseLeave={() => {
           setSrc(index);
           setIsOverImg(false);
         }}
-        onClick={() => {
-          console.log("onClick");
-          // navigate(`/browse/${dress.id}`, { state: HabeshaDress });
-          navigate(`/browse/${id}`, {});
-        }}
+        // onClick={() => {
+        //   console.log("onClick");
+        //   // navigate(`/browse/${dress.id}`, { state: HabeshaDress });
+        //   navigate(`/browse/${dress.id}`);
+        // }}
       >
         <Fade
           autoplay={isOverImg && dress.id === src ? true : false}
@@ -75,6 +125,9 @@ const Card = ({ id, index, image, dress }) => {
         </Fade>
       </div>
       <h1 className="font-yatra  text-2xl text-center text-darkBrown">
+        {dress.id}
+      </h1>
+      <h1 className="font-yatra  text-2xl text-center text-darkBrown">
         {dress.title}
       </h1>
       <p className="text-center text-xl font-roboto text-brown ">
@@ -91,7 +144,7 @@ const Card = ({ id, index, image, dress }) => {
         <button
           className="bg-darkBrown hover:bg-brown  text-white py-3 w-[10rem] rounded-lg transition font-bold text-xl mb-10 mx-5"
           type="button"
-          onClick={addClicked(dress)}
+          onClick={addClicked}
         >
           Add to Cart
           <i className="fa-solid fa-cart-plus ms-2"></i>

@@ -7,10 +7,13 @@ import { Carousel } from "react-responsive-carousel";
 
 // const ProdDetail: FC<{ images: any }> = ({ images }) => 
 const ProdDetail = ({ images }) =>{
-  const imagess = images.map((i: any) => ({
-    url: i.image,
-  }));
-  return (
+  // const imagess = images.map((i: any) => ({
+  //   url: i.image,
+  // }));
+  // const imagess = images.map((i) => ({
+  //   url: i.image,
+  // }));
+    return (
     <div className="flex justify-center items-center bg-white border-t-4 border-b-4   border-brown xl:w-[35rem]">
       {/* <SimpleImageSlider
         width={500}
@@ -43,14 +46,15 @@ const ProdDetail = ({ images }) =>{
 
         // renderArrowPrev={null}
       >
-        {images.map((i: any) => (
+        {/* {images.map((i) => (
           <div>
             <img src={i.image} />
           </div>
-        ))}
+        ))} */}
       </Carousel>
     </div>
   );
 };
 
 export default ProdDetail;
+

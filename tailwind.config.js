@@ -27,6 +27,7 @@ module.exports = {
       rectangleBrown: "#B27C5E",
       disabled: "#9e9e9e",
       green: "#43a047",
+      buttonBg: "#F6ECE1",
     },
     extend: {
       animation: {

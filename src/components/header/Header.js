@@ -16,9 +16,8 @@ const Header = () => {
   const [register, setRegister] = useState(false);
   const [isActive, setIsActive] = useState(false);
 
-  // const { access_token } = getToken();
-  const access_token = 1356431688;
-  console.log("token:", access_token);
+  const { access_token } = getToken();
+ 
 
   const setActive = () => {
     setIsActive(true);

@@ -1,17 +1,41 @@
-import React from "react";
-
+import React, { useState } from "react";
+import {
+  storeToken,
+  getToken,
+  removeToken,
+} from "../../services/localStorageService";
 import cart_icon from "../../assets/cart.png";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-const LoggedIn = () => {
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+const LoggedIn = ({ cartLength }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+  const handleLogout = () => {
+    // dispatch(unSetUserInfo({ name: "", email: "" })); i'll come to this
+    // console.log("Logout Clicked");
+    // dispatch(unSetUserToken({ access_token: null })); here as well
+    removeToken();
+    navigate("/login");
+  };
+
   return (
     <div className="flex gap-5 lg:gap-10">
       <button className="bg-darkBrown px-5 py-2  text-white rounded-lg font-bold hover:bg-brown transition text-lg ">
         <div className="flex items-center gap-2 relative">
-          <p className="font-yatra">CART</p>
+          <Link to="/cart">
+            <p className="font-yatra">CART</p>
+          </Link>
           <img src={cart_icon} alt="" className="w-5 h-5" />
           <div className="absolute bg-white text-darkBrown rounded-full text-xs w-5 h-5 border border-brown top-[-1rem] right-[-1.5rem]">
-            2
+            {cartLength}
           </div>
         </div>
       </button>
@@ -24,7 +48,49 @@ const LoggedIn = () => {
           <i className="fa fa-circle fa-stack-2x"></i>
           <i className="fa fa-bell fa-stack-1x fa-inverse"></i>
         </span>
-        <AccountCircleIcon className="text-darkBrown text-4xl" />
+        <div className="relative">
+          <button
+            type="button"
+            // className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            onClick={toggleDropdown}
+          >
+            <AccountCircleIcon className="text-darkBrown text-4xl" />
+          </button>
+          {isOpen && (
+            <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+              <div
+                className="py-1"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="options-menu"
+              >
+                <a
+                  href="#"
+                  className="block px-4 py-2 text-sm text-brown hover:bg-gray-100 hover:text-gray-900"
+                  role="menuitem"
+                >
+                  Profile
+                </a>
+                <a
+                  href="#"
+                  className="block px-4 py-2 text-sm text-brown hover:bg-gray-100 hover:text-gray-900"
+                  role="menuitem"
+                >
+                  My Orders
+                </a>
+                <button
+                  type="button"
+                  className="block px-4 py-2 text-sm text-brown hover:bg-gray-100 hover:text-gray-900"
+                  // role="menuitem"
+                  onClick={handleLogout}
+                >
+                  Logout
+                  <LogoutIcon />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

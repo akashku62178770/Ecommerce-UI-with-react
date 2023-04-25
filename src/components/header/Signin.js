@@ -1,47 +1,56 @@
-import React, { FC, useState } from "react";
+import React, { useState, useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
+
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { VisibilityOff } from "@mui/icons-material";
-import axios from "axios";
-import { useAppSelector, useAppDispatch } from "../../redux/hooks";
-import Loader from "../Loader";
-import { statusActions } from "../../redux/statusSlice";
+import { Typography } from "@mui/material";
+import { setUserToken } from "../../features/authSlice";
+import { useDispatch } from "react-redux";
+import { useLoginUserMutation } from "../../services/userAuthApi";
+import {
+  storeToken,
+  getToken,
+  removeToken,
+} from "../../services/localStorageService";
 
 const Signin = ({ cancle, register }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const status = useAppSelector((state) => state.status);
-  const dispatch = useAppDispatch();
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-    },
-    validationSchema: Yup.object({
-      username: Yup.string().required("Username is required!"),
-      password: Yup.string().required("Password is required!"),
-    }),
-    onSubmit: async (values, { resetForm }) => {
-      dispatch(statusActions.setIsLoading());
-      await axios
-        .post("https://api.awsugn.biz/auth/jwt/create", {
-          username: values.username,
-          password: values.password,
-        })
-        .then(function (response) {
-          console.log(response);
-          dispatch(statusActions.setSuccess("Success!"));
-          resetForm();
-        })
-        .catch(function (error) {
-          console.log(error);
-          dispatch(statusActions.setError(error.response.data.detail));
-        });
-    },
-  });
-  
+  // const status = useAppSelector((state) => state.status);
+  const [server_error, setServerError] = useState({});
+
+  const navigate = useNavigate();
+  const [loginUser, { isLoading }] = useLoginUserMutation();
+  const dispatch = useDispatch();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    const actualData = {
+      username: data.get("username"), // name of the field
+      password: data.get("password"),
+    };
+    const res = await loginUser(actualData);
+    if (res.error) {
+      console.log(res.error);
+      console.log(res.error.data.errors);
+      setServerError(res.error.data.errors);
+    }
+    if (res.data) {
+      // console.log(typeof res.data);
+      console.log(res.data);
+      console.log("token:", res.data);
+      storeToken(res.data);
+      let { access_token } = getToken();
+      dispatch(setUserToken({ access_token: access_token }));
+      navigate("/");
+    }
+  };
+  let { access_token } = getToken();
+  useEffect(() => {
+    dispatch(setUserToken({ access_token: access_token }));
+  }, [access_token, dispatch]);
+
   return (
     <div className="bg-black/70 w-[100vw] h-[100vh] fixed z-40 flex justify-center items-center animate-slowfade ">
       <div className="bg-veryLightBrown relative rounded-xl p-10">
@@ -55,7 +64,7 @@ const Signin = ({ cancle, register }) => {
           Sign In
         </h1>
         <form
-          onSubmit={formik.handleSubmit}
+          onSubmit={handleSubmit}
           className="flex flex-col justify-center items-center gap-2"
         >
           <input
@@ -63,24 +72,20 @@ const Signin = ({ cancle, register }) => {
             name="username"
             placeholder="username"
             className="sm:w-[20rem] w-[18rem]  border-brown outline-none border p-4 rounded-md text-brown"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.username}
           />
-          <p className="text-red">
-            {formik.errors.username &&
-              formik.touched.username &&
-              formik.errors.username}
-          </p>
+          {/* {server_error.username ? (
+            <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+              {server_error.username[0]}
+            </Typography>
+          ) : (
+            ""
+          )} */}
           <div className="relative">
             <input
               type={`${!showPassword ? "password" : "text"}`}
               name="password"
               placeholder="password"
               className="sm:w-[20rem] w-[18rem] border-brown outline-none border p-4 rounded-md text-brown"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
             />
             {!showPassword ? (
               <VisibilityIcon
@@ -93,25 +98,29 @@ const Signin = ({ cancle, register }) => {
                 onClick={() => setShowPassword(false)}
               />
             )}
-            <p className="text-red mb-10 text-center mt-2">
-              {formik.errors.password &&
-                formik.touched.password &&
-                formik.errors.password}
-            </p>
+            {/* {server_error.password ? (
+              <Typography
+                style={{ fontSize: 12, color: "red", paddingLeft: 10 }}
+              >
+                {server_error.password[0]}
+              </Typography>
+            ) : (
+              ""
+            )} */}
           </div>
-          {status.success && (
+          {/* {status.success && (
             <p className="text-green  text-center">{status.success_message}</p>
           )}
           {status.error && (
             <p className="text-red  text-center">{status.error_message}</p>
           )}
-          {status.loading && <Loader />}
+          {status.loading && <Loader />} */}
           <Link to={""} className="text-brown hover:text-darkBrown">
             Forgot password?
           </Link>
-          <button className="bg-darkBrown hover:scale-105 px-10 py-2 font-roboto text-white rounded-lg font-bold hover:bg-brown transition text-lg ">
+          <button type="submit" className="bg-darkBrown hover:scale-105 px-10 py-2 font-roboto text-white rounded-lg font-bold hover:bg-brown transition text-lg ">
             Sign In
-          </button> 
+          </button>
           {/* <button onClick={register} className="bg-darkBrown hover:scale-105 px-10 py-2 font-roboto text-white rounded-lg font-bold hover:bg-brown transition text-lg ">
             Or Create Account
           </button> */}
@@ -124,5 +133,4 @@ const Signin = ({ cancle, register }) => {
   );
 };
 
-
-export default Signin
+export default Signin;

@@ -16,8 +16,8 @@ const Occasions = () => {
           setDresses(response.data.results);
           // dresses.map((dress) => {
           //   console.log("id", dress.index);
-            // console.log("title", dress.rent_price);
-            // console.log("title", dress.sale_price);
+          // console.log("title", dress.rent_price);
+          // console.log("title", dress.sale_price);
           // });
           // console.log("dresses", dresses);
         })
@@ -48,11 +48,7 @@ const Occasions = () => {
               alt={`occa_dress ${dress.id}`}
               className="w-[450px]"
             /> */}
-            <Card
-              index={index}
-              image={dress.images[0].image}
-              dress={dress}
-            />
+            <Card index={index} image={dress.images[0].image} dress={dress} />
           </div>
         ))}
       </div>

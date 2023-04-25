@@ -1,113 +1,97 @@
 import React, { FC, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
 import axios from "axios";
-import { statusActions } from "../../redux/statusSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import {
+  storeToken,
+  getToken,
+  removeToken,
+} from "../../services/localStorageService";
+// import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Loader from "../Loader";
+import { Typography, Alert } from "@mui/material";
+import { useRegisterUserMutation } from "../../services/userAuthApi";
+
 
 const Register = ({cancleRegister}) => {
-  const [phone, setPhone] = useState("");
+  const [phone_number, setPhone] = useState("");
   const [agree, setAgree] = useState(false);
   const [error, setError] = useState("");
-  const status = useAppSelector((state) => state.status);
-  const dispatch = useAppDispatch();
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      firstname: "",
-      middlename: "",
-      lastname: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      gender: "",
-      // phone: "",
-    },
-    validationSchema: Yup.object({
-      username: Yup.string().required("Username required!"),
-      firstname: Yup.string().required("First name required!"),
-      // middlename: Yup.string().required("Middle name required!"),
-      middlename: Yup.string(),
-      lastname: Yup.string().required("Last name required!"),
-      email: Yup.string()
-        .email("Invalid email format")
-        .required("Email is required!"),
-      password: Yup.string()
-        .min(6, "Must be at least 6 digits!")
-        .required("Password is required!"),
-      confirmPassword: Yup.string().required("Confirm Password is required!"),
-      gender: Yup.string().required("Please select your gender!"),
-      // phone: Yup.string().required("Phone number required!"),
-    }),
-    onSubmit: async (values, { resetForm }) => {
-      if (phone.length < 4) {
-        setError("Phone number is required!");
-        return;
-      }
+  // const status = useAppSelector((state) => state.status);
+  // const dispatch = useAppDispatch();
+  const [server_error, setServerError] = useState({});
+  // const [error, setError] = useState({
+  //   status: false,
+  //   msg: "",
+  //   type: "",
+  // });
 
-      dispatch(statusActions.setIsLoading());
-      // await axios
-      //   .post("http://api.awsugn.biz/auth/users", {
-      // username: values.username,
-      // first_name: values.firstname,
-      // middle_name: values.middlename,
-      // last_name: values.lastname,
-      // email: values.email,
-      // password: values.password,
-      // gender: values.gender,
-      // phone_number: `+${phone}`,
-      //   })
-      //   .then(function (response) {
-      //     console.log(response);
-      //     dispatch(statusActions.setSuccess("Success!"));
-      //     resetForm();
-      //   })
-      //   .catch(function (error) {
-      //     console.log(
-      //       values.username,
-      //       values.firstname,
-      //       values.middlename,
-      //       values.lastname,
-      //       values.confirmPassword,
-      //       values.password,
-      //       values.gender,
-      //       phone
-      //     );
+  const navigate = useNavigate();
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    const actualData = {
+      username: data.get("username"),
+      firstname: data.get("firstname"),
+      middlename: data.get("middlename"),
+      lastname: data.get("lastname"),
+      email: data.get("email"), // name of the field
+      gender: data.get("gender"), // name of the field
+      // phone_number: data.get("phone_number"), // name of the field
+      phone_number: phone_number,
+      password: data.get("password"),
+      confirmPassword: data.get("confirmPassword"),
+      agree: data.get("agree"),
+    };
+    console.log(actualData.phone_number)
+    const res = await registerUser(actualData);
+    console.log(res);
+    if (res.error) {
+      console.log(typeof res.error.data.errors);
+      console.log(res.error.data);
+      console.log(res.error.data.errors);
+      setServerError(res.error.data);
+    }
+    if (res.data) {
+      // console.log(typeof res.data);
+      console.log(res.data);
+      storeToken(res.data.token);
+      alert("Registration successful ");
+      navigate("/dashboard");
+    }
 
-      //     console.log(error);
-      //     dispatch(statusActions.setError(error.response.data.detail));
-      //   });
-      const bodyData = {
-        username: values.username,
-        first_name: values.firstname,
-        middle_name: values.middlename,
-        last_name: values.lastname,
-        email: values.email,
-        password: values.password,
-        gender: values.gender,
-        phone_number: `+${phone}`,
-      };
-      await fetch("https://api.awsugn.biz/auth/users", {
-        method: "POST",
-        body: JSON.stringify(bodyData),
-        headers: { "Content-Type": "application/json" },
-      })
-        .then((response) => {
-          console.log(response.json());
-          console.log( "Registration successful");
-          
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-  });
-  // console.log(phone);
+    // console.log(actualData);
+    // if (
+    //   actualData.name &&
+    //   actualData.email &&
+    //   actualData.password &&
+    //   actualData.tc !== null
+    // ) {
+    //   if (actualData.password === actualData.password2) {
+    //     console.log(actualData);
+    //     document.getElementById("registration-form").reset();
+    //     setError({
+    //       status: true,
+    //       msg: "Registration Success",
+    //       type: "success",
+    //     });
+    //     navigate("/dashboard");
+    //   } else {
+    //     setError({
+    //       status: true,
+    //       msg: "Passwords does not match",
+    //       type: "error",
+    //     });
+    //   }
+    // } else {
+    //   setError({ status: true, msg: "All Fields are Required", type: "error" });
+    // }
+  };
 
   return (
     <div className="bg-black/70 w-[100vw] h-[100vh] fixed z-40 flex justify-center items-center animate-slowfade overflow-scroll mb-10">
@@ -122,7 +106,7 @@ const Register = ({cancleRegister}) => {
           Register
         </h1>
         <form
-          onSubmit={formik.handleSubmit}
+          onSubmit={handleSubmit}
           className="flex flex-col justify-center items-center gap-2"
         >
           <input
@@ -130,126 +114,121 @@ const Register = ({cancleRegister}) => {
             name="username"
             placeholder="username"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.username}
+             
           />
-          <p className="text-red">
-            {formik.errors.username &&
-              formik.touched.username &&
-              formik.errors.username}
-          </p>
+          {server_error.username ? (
+          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+            {server_error.username[0]}
+          </Typography>
+        ) : (
+          ""
+        )}
           <input
             type="text"
             name="firstname"
             placeholder="first name"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.firstname}
+             
           />
-          <p className="text-red">
-            {formik.errors.firstname &&
-              formik.touched.firstname &&
-              formik.errors.firstname}
-          </p>
+          {server_error.firstname ? (
+          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+            {server_error.firstname[0]}
+          </Typography>
+        ) : (
+          ""
+        )}
           <input
             type="text"
             name="middlename"
             placeholder="middle name"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.middlename}
+            
           />
-          <p className="text-red">
-            {formik.errors.middlename &&
-              formik.touched.middlename &&
-              formik.errors.middlename}
-          </p>
+          {server_error.middlename ? (
+          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+            {server_error.middlename[0]}
+          </Typography>
+        ) : (
+          ""
+        )}
           <input
             type="text"
             name="lastname"
             placeholder="last name"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.lastname}
+            
           />
-          <p className="text-red">
-            {formik.errors.lastname &&
-              formik.touched.lastname &&
-              formik.errors.lastname}
-          </p>
+         {server_error.lastname ? (
+          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+            {server_error.lastname[0]}
+          </Typography>
+        ) : (
+          ""
+        )}
           <input
             type="text"
             name="email"
             placeholder="email"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.email}
+            
           />
-          <p className="text-red">
-            {formik.errors.email && formik.touched.email && formik.errors.email}
-          </p>
+         {server_error.email ? (
+          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+            {server_error.email[0]}
+          </Typography>
+        ) : (
+          ""
+        )}
           <input
             type="text"
             name="password"
             placeholder="password"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.password}
+            
           />
-          <p className="text-red">
-            {formik.errors.password &&
-              formik.touched.password &&
-              formik.errors.password}
-          </p>
+         {server_error.password ? (
+          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+            {server_error.password[0]}
+          </Typography>
+        ) : (
+          ""
+        )}
           <input
             type="text"
             name="confirmPassword"
             placeholder="confirm password"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.confirmPassword}
+            
           />
-          <p className="text-red">
-            {formik.errors.confirmPassword &&
-              formik.touched.confirmPassword &&
-              formik.errors.confirmPassword}
-          </p>
+         {server_error.confirmPassword ? (
+          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+            {server_error.confirmPassword[0]}
+          </Typography>
+        ) : (
+          ""
+        )}
 
           <select
             name="gender"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.gender}
+            
           >
-            <option value="" disabled selected>
-              gender
+            <option value="" disabled defaultValue="None">
+              Gender
             </option>
             <option value="M">Male</option>
             <option value="F">Female</option>
           </select>
-          <p className="text-red">
-            {formik.errors.gender &&
-              formik.touched.gender &&
-              formik.errors.gender}
-          </p>
-          {/* <input
-            type="text"
-            name="phone"
-            placeholder="phone"
-            className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.phone}
-          /> */}
+          {server_error.gender ? (
+          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+            {server_error.gender[0]}
+          </Typography>
+        ) : (
+          ""
+        )}
+          
           <PhoneInput
+          name="phone_number"
             country={"et"}
             inputStyle={{
               borderColor: "brown",
@@ -257,17 +236,17 @@ const Register = ({cancleRegister}) => {
               width: "20rem",
               marginLeft: "0",
             }}
-            onChange={(phone) => {
-              setPhone(phone);
+            onChange={(phone_number) => {
+              setPhone(phone_number);
             }}
-
-            // value={}
-            // onChange={(phone) => this.setState({ phone })}
-          />
-          <p className="text-red">{error}</p>
-          {/* <p className="text-orange mb-10">
-            Make sure to include country code (+251...)
-          </p> */}
+              />
+            {server_error.phone_number ? (
+              <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+                {server_error.phone_number[0]}
+              </Typography>
+            ) : (
+              ""
+            )}
 
           <div className="my-5 ">
             <input
@@ -287,7 +266,7 @@ const Register = ({cancleRegister}) => {
             </label>
           </div>
           <div>
-            {status.success && (
+            {/* {status.success && (
               <p className="text-green  text-center px-5">
                 {status.success_message}
               </p>
@@ -296,8 +275,7 @@ const Register = ({cancleRegister}) => {
               <p className="text-red  text-center px-5">
                 {status.error_message}
               </p>
-            )}
-            {status.loading && <Loader />}
+            )} */}
           </div>
           <button
             type="submit"
@@ -309,6 +287,11 @@ const Register = ({cancleRegister}) => {
           <Link to={""} className="text-brown hover:text-darkBrown">
             Already have an account? Sign in!
           </Link>
+          {/* {server_error.non_field_errors ? (
+          <Alert severity="error">{server_error.non_field_errors[0]}</Alert>
+        ) : (
+          ""
+        )} */}
         </form>
       </div>
     </div>

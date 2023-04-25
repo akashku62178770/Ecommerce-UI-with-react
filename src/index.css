@@ -53,3 +53,14 @@ div .loader {
   min-width:2em;
   font-weight:bold;
 }
+.grid-container {
+  text-align: center;
+  align-self: center;
+  left: 169px;
+  /* float: c; */
+  clear: both;
+}
+.item_box{
+  /* align-content: center; */
+  float: 
+}
