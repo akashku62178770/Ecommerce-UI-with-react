@@ -1,20 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const userAuthApi = createApi({
-  reducerPath: "userAuthApi",
+export const cartApi = createApi({
+  reducerPath: "cartApi",
   baseQuery: fetchBaseQuery({ baseUrl: "https://api.awsugn.biz/carts/" }),
   endpoints: (builder) => ({
     // getPokemonByName: builder.query({
     //   query: (name) => `pokemon/${name}`,
     // }),
-    registerCart: builder.mutation({
-      query: (cart) => {
+    getUserCart: builder.mutation({
+      query: (access_token) => {
         return {
-          url: "{id}/items /",
-          method: "POST",
-          body: cart,
+          url: "/",
+          method: "GET",
           headers: {
-            "Content-type": "application/json",
+            // "Content-type": "application/json",
+            authorization: `JWT ${access_token}`,
           },
         };
       },

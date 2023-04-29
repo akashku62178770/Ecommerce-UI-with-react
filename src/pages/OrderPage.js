@@ -1,11 +1,35 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { CartContext, UserContext } from "../Context";
+import { getToken } from "../services/LocalStorageService";
+import OrderDetails from "./OrderDetails";
 
 const OrderPage = () => {
-  const userContext = useContext(UserContext)
-  const {cartData, setCartData} = useContext(CartContext)
-  console.log(cartData[1])
+  const userContext = useContext(UserContext);
+  const { cartData, setCartData } = useContext(CartContext);
+  const [order, setOrder] = useState([]);
+
+  const { access_token } = getToken();
+
+  const getMyOrders = async () => {
+    await fetch("https://api.awsugn.biz/orders/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `JWT ${access_token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setOrder(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
+  useEffect(() => {
+    getMyOrders();
+  });
+
   return (
     <>
       <header
@@ -31,50 +55,34 @@ const OrderPage = () => {
         >
           <thead className="divide-y">
             <tr>
-              <th>Other Code</th>
+              <th>Order Code</th>
               <th>Duration</th>
               <th>Price (Br.)</th>
               <th>Payment Status</th>
             </tr>
           </thead>
-          <hr className="text-bold " />
+
+          {/* <hr className="text-bold " /> */}
           <tbody className="divide-y text-bold">
-            <tr>
-              <td>560045</td>
-              <td>1/04/23 - 10/4/23</td>
-              <td>6,000.00</td>
-              <td>Complete</td>
-            </tr>
-            <tr>
-              <td>560045</td>
-              <td>1/04/23 - 10/4/23</td>
-              <td>6,000.00</td>
-              <td>Pending</td>
-            </tr>
-            <tr>
-              <td>560045</td>
-              <td>1/04/23 - 10/4/23</td>
-              <td>6,000.00</td>
-              <td>Failed</td>
-            </tr>
-            <tr>
-              <td>560045</td>
-              <td>1/04/23 - 10/4/23</td>
-              <td>6,000.00</td>
-              <td>Complete</td>
-            </tr>
-            <tr>
-              <td>560045</td>
-              <td>1/04/23 - 10/4/23</td>
-              <td>6,000.00</td>
-              <td>Pending</td>
-            </tr>
-            <tr>
-              <td>560045</td>
-              <td>1/04/23 - 10/4/23</td>
-              <td>6,000.00</td>
-              <td>Failed</td>
-            </tr>
+            {order.map((item) => {
+              return (
+                <tr key={item.id}>
+                  {/* `/orderdetails/${item.order_code}` */}
+                  <td
+                    
+                     
+                  // ><Link to={() => {<OrderDetails order_code={item.order_code} />;}}> 
+                  ><Link className="hover:shadow-xl" to={`/orderdetails/${item.order_code}`}> 
+                    {item.order_code}</Link>
+                  </td>
+                  <td>
+                    {item.from_date} - {item.to_date}
+                  </td>
+                  <td>6,000.00</td>
+                  <td>{item.payment_status}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

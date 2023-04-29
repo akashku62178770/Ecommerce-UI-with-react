@@ -1,9 +1,9 @@
-import React, { FC } from "react";
+import { React  } from "react";
 import { NavLink } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 
 
-const HiddenMenu = ({closeMenu, signin, register}) => {
+const HiddenMenu = ({closeMenu, signin, register, refresh }) => {
   const navLinkStyles = ({ isActive }: any) => {
     return {
       color: isActive ? "black" : "#876156",
@@ -44,7 +44,8 @@ const HiddenMenu = ({closeMenu, signin, register}) => {
           onClick={() => {
             signin();
             closeMenu();
-          }}
+            refresh()
+          }} 
         >
           Sign in
         </button>
@@ -53,6 +54,7 @@ const HiddenMenu = ({closeMenu, signin, register}) => {
           onClick={() => {
             register();
             closeMenu();
+            refresh()
           }}
         >
           Register

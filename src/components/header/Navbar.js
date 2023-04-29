@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import LoggedIn from "./Loggedin";
-import { getToken } from "../../services/localStorageService";
+import { getToken, storeToken } from "../../services/LocalStorageService";
 import ellipse from "../../assets/Ellipse.png";
 import { CartContext, UserContext } from "../../Context";
 // const Navbar: FC<{ signin: () => void; register: () => void }> = ({
@@ -9,13 +9,13 @@ import { CartContext, UserContext } from "../../Context";
 //   register,
 // }) => {
 const Navbar = ({ signin, register }) => {
-  const userContext = useContext(UserContext)
-  const {cartData, setCartData} = useContext(CartContext)
+  const userContext = useContext(UserContext);
+  const { cartData, setCartData } = useContext(CartContext);
   const [isOpen, setIsOpen] = useState(false);
-  if (cartData==null) {
-    var cartItems = 0
+  if (cartData == null) {
+    var cartItems = 0;
   } else {
-    cartItems = cartData.length
+    cartItems = cartData.length;
   }
   const { access_token } = getToken();
   // const access_token = 12346843168;
@@ -24,15 +24,22 @@ const Navbar = ({ signin, register }) => {
       color: isActive ? "black" : "#876156",
     };
   };
-  
+
+ 
+
   //
   return (
     <>
       {access_token ? (
         <>
           <nav className=" hidden flex-1 justify-between items-center md:flex ">
-            <ul className="flex gap-5 lg:gap-16" 
-            style={{ backgroundImage: `url(${ellipse})`, backgroundSize: "100%", height: "40px" }}
+            <ul
+              className="flex gap-5 lg:gap-16"
+              style={{
+                backgroundImage: `url(${ellipse})`,
+                backgroundSize: "100%",
+                height: "40px",
+              }}
             >
               <li>
                 <NavLink
@@ -43,6 +50,7 @@ const Navbar = ({ signin, register }) => {
                   Home
                 </NavLink>
               </li>
+             
               <li>
                 <NavLink
                   to="/orderpage"
@@ -88,7 +96,7 @@ const Navbar = ({ signin, register }) => {
                 Register
               </button> */}
             </div>
-            <LoggedIn cartLength={cartData? cartData.length: 0}/>
+            <LoggedIn cartLength={cartData ? cartData.length : 0} />
           </nav>
         </>
       ) : (
@@ -104,6 +112,7 @@ const Navbar = ({ signin, register }) => {
                   Home
                 </NavLink>
               </li>
+
               <li>
                 <NavLink
                   to="/browse"

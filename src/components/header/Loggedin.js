@@ -3,13 +3,17 @@ import {
   storeToken,
   getToken,
   removeToken,
-} from "../../services/localStorageService";
+} from "../../services/LocalStorageService";
 import cart_icon from "../../assets/cart.png";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { Button } from "@mui/material";
+import { unSetUserToken } from "../../features/authSlice";
+import { unSetUserInfo } from "../../features/userSlice";
+
 const LoggedIn = ({ cartLength }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
@@ -19,11 +23,11 @@ const LoggedIn = ({ cartLength }) => {
     setIsOpen(!isOpen);
   };
   const handleLogout = () => {
-    // dispatch(unSetUserInfo({ name: "", email: "" })); i'll come to this
+    dispatch(unSetUserInfo({ id: "", username: "" , email: "" }));
     // console.log("Logout Clicked");
-    // dispatch(unSetUserToken({ access_token: null })); here as well
+    dispatch(unSetUserToken({ access_token: null }));
     removeToken();
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -57,36 +61,35 @@ const LoggedIn = ({ cartLength }) => {
             <AccountCircleIcon className="text-darkBrown text-4xl" />
           </button>
           {isOpen && (
-            <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+            <div className="absolute  flex-col right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
               <div
                 className="py-1"
-                role="menu"
+                // role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="options-menu"
               >
-                <a
-                  href="#"
+                <Link
+                  to="/profile"
                   className="block px-4 py-2 text-sm text-brown hover:bg-gray-100 hover:text-gray-900"
-                  role="menuitem"
                 >
                   Profile
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to="/orderpage"
                   className="block px-4 py-2 text-sm text-brown hover:bg-gray-100 hover:text-gray-900"
-                  role="menuitem"
                 >
                   My Orders
-                </a>
-                <button
-                  type="button"
-                  className="block px-4 py-2 text-sm text-brown hover:bg-gray-100 hover:text-gray-900"
-                  // role="menuitem"
+                </Link>
+                <Button
+                  variant="contained"
+                  color="warning"
+                  size="small"
                   onClick={handleLogout}
+                  sx={{}}
                 >
                   Logout
                   <LogoutIcon />
-                </button>
+                </Button>
               </div>
             </div>
           )}

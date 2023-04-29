@@ -4,14 +4,40 @@ import { Fade } from "react-slideshow-image";
 import { HabeshaDress } from "../models/habesha-dress";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 import { UserContext, CartContext } from "../Context";
+import ProductDetails from "../pages/ProductDetails";
+import { useGetLoggedUserQuery } from "../services/userAuthApi";
+import { getToken } from "../services/LocalStorageService";
 
 const Card = ({ index, image, dress }) => {
   const [isOverImg, setIsOverImg] = useState(false);
-  // const [src, setSrc] = useState<number | null>(null); i'll see
+  const { access_token } = getToken();
   const [src, setSrc] = useState(null);
   const [cartButtonStatus, setCartButtonStatus] = useState(false);
   const navigate = useNavigate();
   const {cartData, setCartData} = useContext(CartContext);
+  const { data, isSuccess } = useGetLoggedUserQuery(access_token);
+
+  // const postCartData = async (cartid) => {
+  //   // console.log("iddata1", cartid)
+  //   // cartid =  "cartid"
+  //   await fetch("https://api.awsugn.biz/carts/" + cartid + "/items", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       authorization: `JWT ${access_token}`,
+  //     },
+  //     body: JSON.stringify(cartData.products),
+  //   }).then((response) =>
+  //     response
+  //       .json()
+  //       .then((data) => {
+  //         console.log("cart data?", data);
+  //         console.log("cartid?", cartid);
+  //       })
+  //       .catch((error) => console.error(error))
+  //   );
+  // };
+
   useEffect(() => {
     // addClicked()
     // console.log("useEffect")
@@ -24,7 +50,7 @@ const Card = ({ index, image, dress }) => {
     var cartJson = JSON.parse(previousCart);
     if (cartJson != null) {
       cartJson.map((cart) => {
-        if (cart != null && cart.dress.id == product_id) {
+        if (cart != null && cart.dress.id === product_id) {
           setCartButtonStatus(true);
         }
       });
@@ -32,25 +58,25 @@ const Card = ({ index, image, dress }) => {
   }
 
   const addClicked = () => {
-    console.log("dress:", dress.id);
-    var previousCart = localStorage.getItem("cartData");
-    var cartJson = JSON.parse(previousCart);
+  // console.log("dress:", dress.id);
+  var previousCart = localStorage.getItem("cartData");
+  var cartJson = JSON.parse(previousCart);
 
-    // console.log(dress);
-    var cartData = {
-      product: {
-        dress: dress,
-        // id: dress.id,
-        // title: dress.title,
-        // image: dress.image,
-        // quantity: dress.quantity,
-        // rent_price: dress.rent_price,
-        // num_of_time_rented: dress.num_of_time_rented,
-      },
-      user: {
-        id: 1,
-      },
-    };
+  // console.log(dress);
+  var cartData = {
+    product: dress,
+    user: (data ? data.id : ""),
+  };
+    // product: {
+    // dress: dress,
+    // id: dress.id,
+    // title: dress.title,
+    // image: dress.image,
+    // quantity: dress.quantity,
+    // rent_price: dress.rent_price,
+    // num_of_time_rented: dress.num_of_time_rented,
+    // },
+ 
 
     if (cartJson != null) {
       cartJson.push(cartData);
@@ -83,9 +109,11 @@ const Card = ({ index, image, dress }) => {
   // }
 
   return (
-    <div key={index} className="flex flex-col gdressap-2  w-[16rem] mb-10 hover:border-2 border-brown/80 transition-all px-2 rounded-md py-2 hover:shadow-xl">
+    <div
+      key={index}
+      className="flex flex-col gdressap-2  w-[16rem] mb-10 hover:border-2 border-brown/80 transition-all px-2 rounded-md py-2 hover:shadow-xl"
+    >
       <div
-        
         className="slide-container w-[15rem] cursor-pointer"
         onMouseEnter={() => {
           setSrc(index + 1);
@@ -96,11 +124,12 @@ const Card = ({ index, image, dress }) => {
           setSrc(index);
           setIsOverImg(false);
         }}
-        // onClick={() => {
-        //   console.log("onClick");
-        //   // navigate(`/browse/${dress.id}`, { state: HabeshaDress });
-        //   navigate(`/browse/${dress.id}`);
-        // }}
+        onClick={() => {
+          console.log("onClick");
+          // navigate(`/browse/${dress.id}`,
+          navigate(`/browse/${dress.id}`);
+          <ProductDetails id={dress.id} />;
+        }}
       >
         <Fade
           autoplay={isOverImg && dress.id === src ? true : false}

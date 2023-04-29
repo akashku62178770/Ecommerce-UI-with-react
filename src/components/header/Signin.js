@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { VisibilityOff } from "@mui/icons-material";
-import { Typography } from "@mui/material";
+import { Alert, AlertTitle, Typography } from "@mui/material";
 import { setUserToken } from "../../features/authSlice";
 import { useDispatch } from "react-redux";
 import { useLoginUserMutation } from "../../services/userAuthApi";
@@ -13,7 +13,7 @@ import {
   storeToken,
   getToken,
   removeToken,
-} from "../../services/localStorageService";
+} from "../../services/LocalStorageService";
 
 const Signin = ({ cancle, register }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -50,6 +50,10 @@ const Signin = ({ cancle, register }) => {
   useEffect(() => {
     dispatch(setUserToken({ access_token: access_token }));
   }, [access_token, dispatch]);
+
+  // const submitSignin = () => {
+    
+  // }
 
   return (
     <div className="bg-black/70 w-[100vw] h-[100vh] fixed z-40 flex justify-center items-center animate-slowfade ">
@@ -118,13 +122,17 @@ const Signin = ({ cancle, register }) => {
           <Link to={""} className="text-brown hover:text-darkBrown">
             Forgot password?
           </Link>
-          <button type="submit" className="bg-darkBrown hover:scale-105 px-10 py-2 font-roboto text-white rounded-lg font-bold hover:bg-brown transition text-lg ">
+          <button
+            type="submit"
+            className="bg-darkBrown hover:scale-105 px-10 py-2 font-roboto text-white rounded-lg font-bold hover:bg-brown transition text-lg "
+            // onClick={isLoading ? <AlertTitle>signed in</AlertTitle>: ""}
+          >
             Sign In
           </button>
           {/* <button onClick={register} className="bg-darkBrown hover:scale-105 px-10 py-2 font-roboto text-white rounded-lg font-bold hover:bg-brown transition text-lg ">
             Or Create Account
           </button> */}
-          <Link to={""} className="text-brown hover:text-darkBrown">
+          <Link to={"/register"} className="text-brown hover:text-darkBrown">
             Or Create Account
           </Link>
         </form>

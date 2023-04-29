@@ -8,7 +8,7 @@ import HiddenMenu from "./HiddenMenu";
 import Navbar from "./Navbar";
 import SignIn from "./Signin";
 import Register from "./Register";
-import { getToken } from "../../services/localStorageService";
+import { getToken } from "../../services/LocalStorageService";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +17,6 @@ const Header = () => {
   const [isActive, setIsActive] = useState(false);
 
   const { access_token } = getToken();
- 
 
   const setActive = () => {
     setIsActive(true);
@@ -40,6 +39,22 @@ const Header = () => {
   const cancleRegister = () => {
     setRegister(false);
   };
+
+  const refresh = () => {
+    const { refresh_token } = getToken();
+    fetch("https://api.awsugn.biz/auth/jwt/refresh", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        
+      },
+      body: JSON.stringify({ refresh_token })
+
+    })
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+  };
+
   return (
     <>
       {register ? <Register cancleRegister={cancleRegister} /> : ""}
@@ -56,10 +71,12 @@ const Header = () => {
         </button>
 
         <div
-          className={`${isOpen ? "block" : "hidden"
+          className={`${
+            isOpen ? "block" : "hidden"
           } h-[100vh]  top-0 right-0 w-[60%] bg-white z-30 animate-sliderightmenu fixed`}
         >
           <HiddenMenu
+            refresh={refresh}
             closeMenu={closeMenu}
             signin={signInClicked}
             register={registerClicked}

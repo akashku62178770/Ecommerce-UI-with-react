@@ -1,6 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { getToken } from "../services/LocalStorageService";
+import { useParams } from "react-router-dom";
 
 const OrderDetails = () => {
+  const {access_token} = getToken()
+  const {order_code} = useParams()
+
+
+  const getMyOrders = async () => {
+    await fetch(`https://api.awsugn.biz/orders/${order_code}/items/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `JWT ${access_token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
+  useEffect(() => {
+    getMyOrders();
+  });
+
+
   return (
     <>
       <header
@@ -43,13 +68,13 @@ const OrderDetails = () => {
         >
           <thead className="divide-y">
             <tr>
-              <th>Clothe</th>
+              <th>Clothe Title</th>
               <th>Quantity</th>
               <th>Price (Br.)</th>
               {/* <th>Payment Status</th> */}
             </tr>
           </thead>
-          <hr className="text-bold " />
+         
           <tbody className="divide-y text-bold">
             <tr>
               <td>560045</td>

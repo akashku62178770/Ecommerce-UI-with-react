@@ -16,7 +16,7 @@ const Related = () => {
     const fetchDresses = async () => {
       await axios("https://api.awsugn.biz/clothes/")
         .then(function (response) {
-          console.log(response);
+        
           setDresses(response.data.results);
         })
         .catch(function (error) {
@@ -44,7 +44,7 @@ const Related = () => {
           <Card index={index} dress={dress} />
         ))} */}
         {dresses.map((dress, index) => (
-          <div>
+          <div key={index}>
             <img
               src={dress.images[0].image}
               alt={`occa_dress ${dress.id}`}

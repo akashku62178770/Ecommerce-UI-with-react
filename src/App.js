@@ -14,6 +14,7 @@ import { CartContext } from "./Context";
 import { useState } from "react";
 import Cart from "./pages/Cart";
 import { useSelector } from "react-redux";
+import Profile from "./pages/Profile";
 const checkCart = localStorage.getItem("cartData");
 
 function App() {
@@ -38,12 +39,13 @@ function App() {
             {/* <Route index={false} path="search" element={<SearchPage />} /> */}
           </Route>
           <Route path="/aboutus" element={<Aboutus />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/register" element={<Register />} />
           {/* <Route path="/register" element={!access_token ?<Register />:<Navigate to="/"} />  */}
           <Route path="/ordering" element={<Ordering />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/orderpage" element={<OrderPage />} />
-          <Route path="/orderdetails" element={<OrderDetails />} />
+          <Route path="/orderdetails/:order_code" element={<OrderDetails />} />
           <Route path="/product-detail" element={<ProductDetails />} />
         </Routes>
       </BrowserRouter>

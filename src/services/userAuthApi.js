@@ -41,11 +41,23 @@ export const userAuthApi = createApi({
     getLoggedUser: builder.query({
       query: (access_token) => {
         return {
-          url: "profile/",
+          url: "users/me",
           method: "GET",
           headers: {
             // "Content-type": "application/json",
-            authorization: `Bearer ${access_token}`,
+            authorization: `JWT ${access_token}`,
+          },
+        };
+      },
+    }),
+    getUserCart: builder.query({
+      query: (access_token) => {
+        return {
+          url: "",
+          method: "GET",
+          headers: {
+            // "Content-type": "application/json",
+            authorization: `JWT ${access_token}`,
           },
         };
       },

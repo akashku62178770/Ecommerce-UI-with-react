@@ -10,14 +10,13 @@ import {
   storeToken,
   getToken,
   removeToken,
-} from "../../services/localStorageService";
+} from "../../services/LocalStorageService";
 // import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Loader from "../Loader";
 import { Typography, Alert } from "@mui/material";
 import { useRegisterUserMutation } from "../../services/userAuthApi";
 
-
-const Register = ({cancleRegister}) => {
+const Register = ({ cancleRegister }) => {
   const [phone_number, setPhone] = useState("");
   const [agree, setAgree] = useState(false);
   const [error, setError] = useState("");
@@ -48,7 +47,8 @@ const Register = ({cancleRegister}) => {
       confirmPassword: data.get("confirmPassword"),
       agree: data.get("agree"),
     };
-    console.log(actualData.phone_number)
+
+    console.log("phone", actualData.phone_number);
     const res = await registerUser(actualData);
     console.log(res);
     if (res.error) {
@@ -62,7 +62,7 @@ const Register = ({cancleRegister}) => {
       console.log(res.data);
       storeToken(res.data.token);
       alert("Registration successful ");
-      navigate("/dashboard");
+      navigate("/");
     }
 
     // console.log(actualData);
@@ -114,104 +114,96 @@ const Register = ({cancleRegister}) => {
             name="username"
             placeholder="username"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-             
           />
           {server_error.username ? (
-          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
-            {server_error.username[0]}
-          </Typography>
-        ) : (
-          ""
-        )}
+            <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+              {server_error.username[0]}
+            </Typography>
+          ) : (
+            ""
+          )}
           <input
             type="text"
             name="firstname"
             placeholder="first name"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-             
           />
           {server_error.firstname ? (
-          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
-            {server_error.firstname[0]}
-          </Typography>
-        ) : (
-          ""
-        )}
+            <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+              {server_error.firstname[0]}
+            </Typography>
+          ) : (
+            ""
+          )}
           <input
             type="text"
             name="middlename"
             placeholder="middle name"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            
           />
           {server_error.middlename ? (
-          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
-            {server_error.middlename[0]}
-          </Typography>
-        ) : (
-          ""
-        )}
+            <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+              {server_error.middlename[0]}
+            </Typography>
+          ) : (
+            ""
+          )}
           <input
             type="text"
             name="lastname"
             placeholder="last name"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            
           />
-         {server_error.lastname ? (
-          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
-            {server_error.lastname[0]}
-          </Typography>
-        ) : (
-          ""
-        )}
+          {server_error.lastname ? (
+            <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+              {server_error.lastname[0]}
+            </Typography>
+          ) : (
+            ""
+          )}
           <input
             type="text"
             name="email"
             placeholder="email"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            
           />
-         {server_error.email ? (
-          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
-            {server_error.email[0]}
-          </Typography>
-        ) : (
-          ""
-        )}
+          {server_error.email ? (
+            <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+              {server_error.email[0]}
+            </Typography>
+          ) : (
+            ""
+          )}
           <input
             type="text"
             name="password"
             placeholder="password"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            
           />
-         {server_error.password ? (
-          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
-            {server_error.password[0]}
-          </Typography>
-        ) : (
-          ""
-        )}
+          {server_error.password ? (
+            <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+              {server_error.password[0]}
+            </Typography>
+          ) : (
+            ""
+          )}
           <input
             type="text"
             name="confirmPassword"
             placeholder="confirm password"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            
           />
-         {server_error.confirmPassword ? (
-          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
-            {server_error.confirmPassword[0]}
-          </Typography>
-        ) : (
-          ""
-        )}
+          {server_error.confirmPassword ? (
+            <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+              {server_error.confirmPassword[0]}
+            </Typography>
+          ) : (
+            ""
+          )}
 
           <select
             name="gender"
             className="w-[20rem] border-brown outline-none border p-4 rounded-md "
-            
           >
             <option value="" disabled defaultValue="None">
               Gender
@@ -220,15 +212,15 @@ const Register = ({cancleRegister}) => {
             <option value="F">Female</option>
           </select>
           {server_error.gender ? (
-          <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
-            {server_error.gender[0]}
-          </Typography>
-        ) : (
-          ""
-        )}
-          
+            <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+              {server_error.gender[0]}
+            </Typography>
+          ) : (
+            ""
+          )}
+
           <PhoneInput
-          name="phone_number"
+            name="phone_number"
             country={"et"}
             inputStyle={{
               borderColor: "brown",
@@ -239,14 +231,14 @@ const Register = ({cancleRegister}) => {
             onChange={(phone_number) => {
               setPhone(phone_number);
             }}
-              />
-            {server_error.phone_number ? (
-              <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
-                {server_error.phone_number[0]}
-              </Typography>
-            ) : (
-              ""
-            )}
+          />
+          {server_error.phone_number ? (
+            <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
+              {server_error.phone_number[0]}
+            </Typography>
+          ) : (
+            ""
+          )}
 
           <div className="my-5 ">
             <input
@@ -298,5 +290,4 @@ const Register = ({cancleRegister}) => {
   );
 };
 
-
-export default Register
+export default Register;

@@ -3,43 +3,105 @@ import { Link } from "react-router-dom";
 import { CartContext, UserContext } from "../Context";
 import OrderPage from "./OrderPage";
 import OrderPopup from "./OrderPopup";
+import { getToken } from "../services/LocalStorageService";
+import CartItems from "./CartItems";
 
+// [
+//   {
+//       "cart_id": "0c07d36a-cbdf-4d45-b98d-5f27ee645466",
+//       "user": 11,
+//       "items": [
+//           {
+//               "id": 2,
+//               "cart": "0c07d36a-cbdf-4d45-b98d-5f27ee645466",
+//               "clothe": 1,
+//               "quantity": 1,
+//               "created_at": "2023-04-23T18:08:58.480902Z",
+//               "last_update": "2023-04-23T18:08:58.480933Z"
+//           }
+//       ],
+//       "last_update": "2023-04-23T09:41:14.526228Z",
+//       "created_at": "2023-04-23T09:41:14.526189Z"
+//   }
+// ]
+// https://api.awsugn.biz/carts/0c07d36a-cbdf-4d45-b98d-5f27ee645466/
+
+// [
+//   {
+//       "id": 2,
+//       "cart": "0c07d36a-cbdf-4d45-b98d-5f27ee645466",
+//       "clothe": 1,
+//       "quantity": 1,
+//       "created_at": "2023-04-23T18:08:58.480902Z",
+//       "last_update": "2023-04-23T18:08:58.480933Z"
+//   }
+// ]
 const Cart = () => {
-  const userContext = useContext(UserContext);
+  // const userContext = useContext(UserContext);
   const { cartData, setCartData } = useContext(CartContext);
   const [orderpage, setOrderPage] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
+  const { access_token } = getToken();
+  const [cartid, setCartid] = useState(null);
+  const [dress, setDress] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
+  // console.log("cartpage", cartData);
   const [cartItems, setCartItems] = useState({
-    userId: "",
-    id: "",
     clothe: "",
     quantity: "",
     created_at: "",
     last_update: "",
   });
-  // const
-  console.log(cartData);
-  //   [
-  //     {
-  //         "id": 2,
-  //         "cart": "0c07d36a-cbdf-4d45-b98d-5f27ee645466",
-  //         "clothe": 1,
-  //         "quantity": 1,
-  //         "created_at": "2023-04-23T18:08:58.480902Z",
-  //         "last_update": "2023-04-23T18:08:58.480933Z"
-  //     }
-  // ]
-  // const [isChecked, setIsChecked] = useState(false);
+  cartData.map((item) => {
+    console.log("product;", item.product)
+  })
+
+
+
+  const getCartid = async () => {
+    await fetch("https://api.awsugn.biz/carts/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `JWT ${access_token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setDress(data);
+        // console.log("dress:", data);
+        // console.log("id:", data[0].cart_id);
+        setCartid(data[0].cart_id);
+        // console.log("id1", cartid);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  // Posting cart data
+  const postCartData = async () => {
+    console.log("iddata1", cartid);
+    // cartid =  "cartid"
+    await fetch("https://api.awsugn.biz/carts/" + cartid + "/items", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `JWT ${access_token}`,
+      },
+      body: JSON.stringify(cartData.products),
+    }).then((response) =>
+      response
+        .json()
+        .then((data) => {
+          console.log("cart data?", data);
+          console.log("cartid?", cartid);
+        })
+        .catch((error) => console.error(error))
+    );
+  };
+  getCartid();
   // useEffect(() => {
-  //   const requestOptions = {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify(),
-  //   };
-  //   fetch("https://api.awsugn.biz/carts/{id}/items", requestOptions)
-  //     .then((response) => response.json())
-  //     // .then((data) => this.setState({ postId: data.id }));
+  // getCartid();
+  // postCartData();
   // }, []);
 
   const handleCheckboxChange = (event) => {
@@ -64,6 +126,7 @@ const Cart = () => {
 
   const openMenu = () => {
     setIsOpen(true);
+    postCartData();
   };
   const closeMenu = () => {
     setIsOpen(false);
@@ -78,6 +141,7 @@ const Cart = () => {
   return (
     <>
       {orderpage ? <OrderPage cancleOrder={cancleOrder} /> : ""}
+
       <header
         className="flex-container h-[15vh] p-4"
         style={{ backgroundColor: "#FFFAFA" }}
@@ -91,96 +155,8 @@ const Cart = () => {
           </h1>
         </div>
       </header>
-
-      <div className="flex flex-col">
-        {cartData &&
-          cartData.map((item) => {
-            return (
-              <div className="flex mx-auto my-4">
-                <input
-                  type="checkbox"
-                  className="form-checkbox"
-                  onChange={handleCheckboxChange}
-                />
-                <div
-                  className="flex bg-darkBrown grid-container rounded w-[100vh] mx-2"
-                  style={{}}
-                >
-                  <img
-                    src={item.product.dress.images[0].image}
-                    alt="..."
-                    className="object-fill w-[15vh]"
-                  />
-                  <div className="flex-column text-white">
-                    <h4 className="ms-4 mt-4">
-                      <b>{item.product.dress.title}</b>
-                    </h4>
-                    <h5>Available Quantity: {item.product.dress.quantity}</h5>
-                    <h5>Rented: {item.product.dress.num_of_time_rented}</h5>
-                  </div>
-
-                  <div className="custom-number-input mx-auto align-bottom  text-white">
-                    <br />
-                    <br />
-                    <div className=" flex h-5 w-20 rounded relative bg-transparent mt-1 xs">
-                      <button
-                        data-action="decrement"
-                        className=" bg-buttonBg text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none"
-                        onClick={handleDecrement(item.product.dress.id)}
-                      >
-                        <span className="m-auto text-black font-bold text-md">
-                          −
-                        </span>
-                      </button>
-
-                      <input
-                        type="int"
-                        id={item.product.dress.quantity}
-                        className="outline-none focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-brown"
-                        name="custom-input-number"
-                        // value={value}
-                        // value="2"
-                        // onChange={}
-                      />
-
-                      <button
-                        data-action="increment"
-                        className="bg-buttonBg text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-r cursor-pointer"
-                        onClick={handleIncrement(item.product.dress.id)}
-                      >
-                        <span className="m-auto font-bold text-md text-black btn-md rounded-full">
-                          +
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="flex-column text-white">
-                    <h4 className="ms-4 mt-4">
-                      <b>{item.product.dress.title}</b>
-                    </h4>
-                    {/* <h5>{} *{item.product.dress.rent_price}</h5> */}
-                    <h5 id="result">2 *{item.product.dress.rent_price}</h5>
-
-                    <h5></h5>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        {!cartData && (
-          <div className="flex-container mx-auto">
-            <h2 className="padding text-lg my-4" style={{ fontSize: 32 }}>
-              Nothing in the cart!
-            </h2>
-            <Link to="/">
-              <button className="button bg-darkBrown rounded-lg text-white hover:bg-brown text-lg w-[15vh] mt-">
-                Home
-              </button>
-            </Link>
-          </div>
-        )}
-      </div>
+      <p>{cartid}</p>
+      <CartItems cartid={cartid} />
 
       <div className="flex flex-wrap py-10">
         <div className="flex-col mx-auto">
@@ -193,20 +169,19 @@ const Cart = () => {
             </h3>
           </div>
           <div className="flex gap-10 lg:gap-10">
-          <button
-                className="bg-darkBrown text-white rounded-lg hover:scale-110 hover:text-darkBrown transition text-md lg:text-lg"
-                onClick={openMenu}
-                // onClick={console.log('signin')}
-              >
-                Order
-              </button>
+            <button
+              className="bg-darkBrown text-white rounded-lg hover:scale-110 hover:text-darkBrown transition text-md lg:text-lg"
+              onClick={openMenu}
+              // onClick={console.log('signin')}
+            >
+              Order
+            </button>
           </div>
           <div
             className={`${
               isOpen ? "block" : "hidden"
             } h-[100vh]  top-0 right-0 w-[60%] bg-white z-30 animate-sliderightmenu fixed`}
           >
-            
             <OrderPopup
               closeMenu={closeMenu}
               // cancleOrder = {cancleOrder}

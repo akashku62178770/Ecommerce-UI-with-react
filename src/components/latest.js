@@ -16,7 +16,7 @@ const Latest = () => {
     const fetchDresses = async () => {
       await axios("https://api.awsugn.biz/clothes/")
         .then(function (response) {
-          console.log("response", response);
+         
           setDresses(response.data.results)
         })
         .catch(function (error) {

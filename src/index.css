@@ -36,22 +36,22 @@ div .loader {
   text-align: center;
 }
 
-.fa-stack[data-count]:after{
-  position:absolute;
-  right:1%;
-  top:2%;
+.fa-stack[data-count]:after {
+  position: absolute;
+  right: 1%;
+  top: 2%;
   content: attr(data-count);
-  font-size:40%;
-  padding:.6em;
-  border-radius:999px;
+  font-size: 40%;
+  padding: 0.6em;
+  border-radius: 999px;
   border-color: #876156;
-  line-height:.75em;
+  line-height: 0.75em;
   color: rgb(133, 74, 74);
   /* background:rgba(158, 101, 101, 0.85); */
-  background:white;
-  text-align:center;
-  min-width:2em;
-  font-weight:bold;
+  background: white;
+  text-align: center;
+  min-width: 2em;
+  font-weight: bold;
 }
 .grid-container {
   text-align: center;
@@ -60,7 +60,24 @@ div .loader {
   /* float: c; */
   clear: both;
 }
-.item_box{
+.item_box {
   /* align-content: center; */
-  float: 
+  float: ;
+}
+.successMessage {
+  align-items: center;
+  justify-content: center;
+  padding-top: 15vh;
+  padding: auto;
+  padding-left: 8vh;
+}
+.successPopup{
+  background-color: blue;
+  
+}
+.tick {
+  position: absolute;
+  /* align-content: first baseline; */
+  top: 4cm;
+  width: 230px;
 }
