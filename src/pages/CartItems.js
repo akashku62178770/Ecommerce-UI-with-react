@@ -6,13 +6,30 @@ import { CartContext, UserContext } from "../Context";
 const CartItems = ({ cartid }) => {
   const { access_token } = getToken();
   const { cartData, setCartData } = useContext(CartContext);
-  const [num, setNum] = useState(0);
+  const [num, setNum] = useState(1);
   const [cartItems, setCartItems] = useState({
-    clothe: "",
-    quantity: "",
-  
+    clothe: "1",
+    quantity: "3",
   });
-  
+
+  // const postCartItems = async () => {
+  //   await fetch("https://api.awsugn.biz/carts/" + cartid + "/items", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       authorization: `JWT ${access_token}`,
+  //     },
+  //     body: JSON.stringify(cartItems),
+  //   }).then((response) =>
+  //     response
+  //       .json()
+  //       .then((data) => {
+  //         console.log("cart data?", data);
+  //         console.log("cartid?", cartid);
+  //       })
+  //       .catch((error) => console.error(error))
+  //   );
+  // };
 
   // cartData.map((item) => {
   //   console.log("item;", item.product)
@@ -32,7 +49,7 @@ const CartItems = ({ cartid }) => {
   };
   // cartData.
 
-// console.log(cartItems)
+  // console.log(cartItems)
   // let incNum =()=>{
   //     if(num<10)
   //     {
@@ -78,7 +95,7 @@ const CartItems = ({ cartid }) => {
   // cartData.map((item) => {
   //   console.log("product;", item.product)
   // })
-  console.log(cartData)
+  // console.log(cartData);
 
   // const handleIncrement = (id) => {
   //   setNum(Number(num) + 1);

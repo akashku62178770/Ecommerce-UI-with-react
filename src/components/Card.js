@@ -65,6 +65,7 @@ const Card = ({ index, image, dress }) => {
   // console.log(dress);
   var cartData = {
     product: dress,
+    
     user: (data ? data.id : ""),
   };
     // product: {

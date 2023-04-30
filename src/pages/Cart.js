@@ -47,30 +47,28 @@ const Cart = () => {
   const [isChecked, setIsChecked] = useState(false);
   // console.log("cartpage", cartData);
   const [cartItems, setCartItems] = useState({
-    clothe: "",
-    quantity: "",
-    created_at: "",
-    last_update: "",
+    clothe: "1",
+    quantity: "1",
   });
-  
-  const handleIncrement = (product_id) => {
-  //   setProducts(products.map(product => {
-  //     if (product.id === id) {
-  //       return { ...product, quantity: product.quantity + 1 };
-  //     } else {
-  //       return product;
-  //     }
-  //   }));
-    };
-  const handleDecrement = (product_id) => {
-    // setProducts(products.map(product => {
-    //   if (product.id === id && product.quantity > 1) {
-    //     return { ...product, quantity: product.quantity - 1 };
-    //   } else {
-    //     return product;
-    //   }
-    // }));
-    };
+
+  const postCartItems = async () => {
+    await fetch("https://api.awsugn.biz/carts/" + cartid + "/items", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `JWT ${access_token}`,
+      },
+      body: JSON.stringify(cartItems),
+    }).then((response) =>
+      response
+        .json()
+        .then((data) => {
+          console.log("cart data?", data);
+          console.log("cartid?", cartid);
+        })
+        .catch((error) => console.error(error))
+    );
+  };
 
   const getCartid = async () => {
     await fetch("https://api.awsugn.biz/carts/", {
@@ -110,8 +108,6 @@ const Cart = () => {
   //     .catch((error) => console.log("error", error));
   // };
 
-
-
   // Posting cart data
   const postCartData = async () => {
     console.log("iddata1", cartid);
@@ -142,7 +138,6 @@ const Cart = () => {
   const handleCheckboxChange = (event) => {
     // setIsChecked(event.target.checked);
   };
-
 
   const handleSubmit = (product_id) => {
     // const value = parseInt(document.getElementById("item.product.dress.quantity").value)
@@ -201,6 +196,13 @@ const Cart = () => {
               // onClick={console.log('signin')}
             >
               Order
+            </button>
+            <button
+              className="bg-darkBrown text-white rounded-lg hover:scale-110 hover:text-darkBrown transition text-md lg:text-lg"
+              onClick={postCartItems}
+              // onClick={console.log('signin')}
+            >
+              Save Cart
             </button>
           </div>
           <div
