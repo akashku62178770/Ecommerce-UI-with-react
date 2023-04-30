@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import searchIcon from "../assets/search-icon.png";
 import downIcon from "../assets/down.png";
-import mainImg from "../assets/main-img.png";
+import mainImg from "../assets/main-img1.png";
 import herobg from "../assets/hero-rec.png";
-import heroOvalTop from "../assets/oval1.png";
+import heroOvalTop from "../assets/oval3.png";
 import heroOvalBottom from "../assets/oval2.png";
 
 import "../index.css";
@@ -88,7 +88,7 @@ const Hero = () => {
           </form>
         </div>
       </div>
-      <div className="absolute top-24 right-4 lg:right-[3rem] 2xl:right-[10%] hidden md:block">
+      <div className="absolute top-24 right-2 lg:right-[1rem] 2xl:right-[5%] hidden md:block">
         {/* <img
           src={bgImg}
           alt="background image"
@@ -110,7 +110,7 @@ const Hero = () => {
         <img
           src={mainImg}
           alt="main image"
-          className="relative  w-[19rem] h-[40rem] xl:right-[12rem]"
+          className="relative  w-[22rem] h-[40rem] xl:right-[10rem]"
         />
       </div>
     </div>

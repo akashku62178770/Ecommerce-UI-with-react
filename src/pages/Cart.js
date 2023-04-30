@@ -52,11 +52,25 @@ const Cart = () => {
     created_at: "",
     last_update: "",
   });
-  cartData.map((item) => {
-    console.log("product;", item.product)
-  })
-
-
+  
+  const handleIncrement = (product_id) => {
+  //   setProducts(products.map(product => {
+  //     if (product.id === id) {
+  //       return { ...product, quantity: product.quantity + 1 };
+  //     } else {
+  //       return product;
+  //     }
+  //   }));
+    };
+  const handleDecrement = (product_id) => {
+    // setProducts(products.map(product => {
+    //   if (product.id === id && product.quantity > 1) {
+    //     return { ...product, quantity: product.quantity - 1 };
+    //   } else {
+    //     return product;
+    //   }
+    // }));
+    };
 
   const getCartid = async () => {
     await fetch("https://api.awsugn.biz/carts/", {
@@ -76,6 +90,27 @@ const Cart = () => {
       })
       .catch((error) => console.log("error", error));
   };
+
+  // const getCartProducts = async () => {
+  //   await fetch("https://api.awsugn.biz/clothes/", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       authorization: `JWT ${access_token}`,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setDress(data);
+  //       // console.log("dress:", data);
+  //       // console.log("id:", data[0].cart_id);
+  //       setCartid(data[0].cart_id);
+  //       // console.log("id1", cartid);
+  //     })
+  //     .catch((error) => console.log("error", error));
+  // };
+
+
 
   // Posting cart data
   const postCartData = async () => {
@@ -108,16 +143,7 @@ const Cart = () => {
     // setIsChecked(event.target.checked);
   };
 
-  const handleIncrement = (product_id) => {
-    // const value = parseInt(document.getElementById("quantity_required").value)
-    // setCount(value+1)
-    // console.log(value);
-  };
-  const handleDecrement = (product_id) => {
-    // const value = parseInt(document.getElementById("item.product.dress.quantity").value)
-    // console.log(value);
-    // setCount(value-1)
-  };
+
   const handleSubmit = (product_id) => {
     // const value = parseInt(document.getElementById("item.product.dress.quantity").value)
     // console.log(value);

@@ -10,22 +10,9 @@ const Occasions = () => {
     const OccasionalDress = async () => {
       await axios("https://api.awsugn.biz/clothes/")
         .then(function (response) {
-          // console.log("response1", response);
-          // console.log("response2", response.data.results);
-          // dresses = response.data.results;
           setDresses(response.data.results);
-          // dresses.map((dress) => {
-          //   console.log("id", dress.index);
-          // console.log("title", dress.rent_price);
-          // console.log("title", dress.sale_price);
-          // });
-          // console.log("dresses", dresses);
         })
-        // .then((resposne) => {
-        //   console.log("response", resposne);
-        //   console.log("response1", resposne.data);
 
-        // })
         .catch(function (error) {
           console.log(error);
         });

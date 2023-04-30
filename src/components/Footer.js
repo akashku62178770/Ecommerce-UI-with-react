@@ -9,23 +9,26 @@ import axios from "axios";
 import PhoneInput from "react-phone-input-2";
 
 const Footer = () => {
-  // const verifyToken = async (token: string) => {
-  //   console.log("inverifyToken");
-  //   const secretKey = "6LcYiSAlAAAAAC1L6jG9GPypMYnlIRxu_Gevcks0";
-  //   console.log(secretKey);
-  //   const result = await axios(
-  //     `https://www.google.com/recaptcha/api/siteverify?secret=${token}&response=${secretKey}`
-  //   )
-  //     .then((response) => {
-  //       console.log(response);
-  //       return response.data;
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
 
-  //   return result;
-  // };
+  // const verifyToken = async (token: string) => {
+  const verifyToken = async (token) => {
+    console.log("inverifyToken");
+    const secretKey = "6LeEUBwlAAAAAAFsYKBG4KkKlwdE6Vx4yMJL3BzT";
+    console.log(secretKey);
+    const result = await axios(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${token}&response=${secretKey}`
+    )
+      .then((response) => {
+        console.log(response);
+        return response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    return result;
+  };
+  verifyToken()
   const [isVerified, setIsVerified] = useState(false);
   const [phone, setPhone] = useState("");
   const handleVerify = (token: any) => {
@@ -34,6 +37,7 @@ const Footer = () => {
     }
   };
   // const captchaRef = useRef<any>();
+  // https://api.awsugn.biz/contact/
   const captchaRef = useRef();
   const [error, setError] = useState("");
   const formik = useFormik({
@@ -154,12 +158,12 @@ const Footer = () => {
               ></textarea>
 
               <button className="bg-darkBrown text-white p-4 text-lg rounded-md px-5">
-                send
+                Send
               </button>
             </div>
             <div className="flex justify-center">
               <ReCAPTCHA
-                sitekey="6LfyeC4lAAAAAGEs7tRDjLcLl53nJNeXx0kyV2oA"
+                sitekey="6LeEUBwlAAAAAAFsYKBG4KkKlwdE6Vx4yMJL3BzT"
                 onChange={handleVerify}
               />
             </div>
