@@ -81,3 +81,7 @@ div .loader {
   top: 4cm;
   width: 230px;
 }
+
+.occasionType {
+  background-color: rgba(218, 189, 153, 0.55);
+}

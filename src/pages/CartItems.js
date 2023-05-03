@@ -31,16 +31,18 @@ const CartItems = ({ cartid }) => {
   //   );
   // };
 
-  // cartData.map((item) => {
-  //   console.log("item;", item.product)
-  //   setCartItems(
-  //     {quantity: item.product.quantity })
-  // })
+  cartData.map((item) => {
+    console.log("item;", item.product);
+    // setCartItems(
+    //   {quantity: item.product.quantity })
+  });
 
   const handleIncrement = (id) => {
-    // const value = parseInt(document.getElementById("quantity_required").value)
-    // setCount(value+1)
-    // console.log(value);
+    // setCartData(cartData => {
+    //   cartData.map((item) =>
+    //   id === item.product.id ? (...item, item.product.quantity:  item.product.quantity +1) : item
+    //   )
+    // })
   };
   const handleDecrement = (id) => {
     // const value = parseInt(document.getElementById("item.product.dress.quantity").value)
@@ -92,17 +94,7 @@ const CartItems = ({ cartid }) => {
   const handleCheckboxChange = (event) => {
     // setIsChecked(event.target.checked);
   };
-  // cartData.map((item) => {
-  //   console.log("product;", item.product)
-  // })
-  // console.log(cartData);
 
-  // const handleIncrement = (id) => {
-  //   setNum(Number(num) + 1);
-  // };
-  // const handleDecrement = () => {
-  //   setNum(num - 1);
-  // };
   const handleSubmit = (product_id) => {
     // const value = parseInt(document.getElementById("item.product.dress.quantity").value)
     // console.log(value);
@@ -136,7 +128,7 @@ const CartItems = ({ cartid }) => {
                       {/* <b>{item.product.dress.title}</b> */}
                       <b>{item.product.title}</b>
                     </h4>
-                    {/* <h5>Available Quantity: {item.product.dress.quantity}</h5> */}
+                    <h5>Available Quantity: {item.product.quantity}</h5>
                     {/* <h5>Available Quantity: {item.quantity}</h5> */}
                     {/* <h5>Rented: {item.product.dress.num_of_time_rented}</h5> */}
                     <h5>Rented: {item.product.num_of_time_rented}</h5>

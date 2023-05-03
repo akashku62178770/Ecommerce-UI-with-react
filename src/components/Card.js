@@ -14,7 +14,7 @@ const Card = ({ index, image, dress }) => {
   const [src, setSrc] = useState(null);
   const [cartButtonStatus, setCartButtonStatus] = useState(false);
   const navigate = useNavigate();
-  const {cartData, setCartData} = useContext(CartContext);
+  const { cartData, setCartData } = useContext(CartContext);
   const { data, isSuccess } = useGetLoggedUserQuery(access_token);
 
   // const postCartData = async (cartid) => {
@@ -58,26 +58,16 @@ const Card = ({ index, image, dress }) => {
   }
 
   const addClicked = () => {
-  // console.log("dress:", dress.id);
-  var previousCart = localStorage.getItem("cartData");
-  var cartJson = JSON.parse(previousCart);
+    // console.log("dress:", dress.id);
+    var previousCart = localStorage.getItem("cartData");
+    var cartJson = JSON.parse(previousCart);
 
-  // console.log(dress);
-  var cartData = {
-    product: dress,
-    
-    user: (data ? data.id : ""),
-  };
-    // product: {
-    // dress: dress,
-    // id: dress.id,
-    // title: dress.title,
-    // image: dress.image,
-    // quantity: dress.quantity,
-    // rent_price: dress.rent_price,
-    // num_of_time_rented: dress.num_of_time_rented,
-    // },
- 
+    // console.log(dress);
+    var cartData = {
+      product: dress,
+
+      user: data ? data.id : "",
+    };
 
     if (cartJson != null) {
       cartJson.push(cartData);

@@ -12,18 +12,18 @@ const Footer = () => {
 
   // const verifyToken = async (token: string) => {
   const verifyToken = async (token) => {
-    console.log("inverifyToken");
+    // console.log("inverifyToken");
     const secretKey = "6LeEUBwlAAAAAAFsYKBG4KkKlwdE6Vx4yMJL3BzT";
-    console.log(secretKey);
+    // console.log(secretKey);
     const result = await axios(
       `https://www.google.com/recaptcha/api/siteverify?secret=${token}&response=${secretKey}`
     )
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         return response.data;
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
 
     return result;

@@ -3,6 +3,7 @@ import topRectangle from "../assets/Rectangle 9.png";
 import { OccasionalDress } from "../models/occasional-dress";
 import axios from "axios";
 import Card from "./Card";
+import OccasionCard from "./OccasionCard";
 
 const Occasions = () => {
   const [dresses, setDresses] = useState([]);
@@ -35,7 +36,7 @@ const Occasions = () => {
               alt={`occa_dress ${dress.id}`}
               className="w-[450px]"
             /> */}
-            <Card index={index} image={dress.images[0].image} dress={dress} />
+            <OccasionCard index={index} image={dress.images[0].image} dress={dress} />
           </div>
         ))}
       </div>

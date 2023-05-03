@@ -5,3 +5,5 @@ export const UserContext = createContext({
 })
 
 export const CartContext = createContext();
+
+ 
