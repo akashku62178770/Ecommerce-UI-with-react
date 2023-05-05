@@ -83,5 +83,13 @@ div .loader {
 }
 
 .occasionType {
-  background-color: rgba(218, 189, 153, 0.55);
+  /* background-color: rgba(218, 189, 153, 0.55); */
+  /* overla */
+  background: rgba(233, 140, 0, 0.7);
+  /* margin-top: 10px; */
+  /* margin-left: 55px; */
+  /* width: 200px; */
+  font-size: 25px ;
+  /* color: rgb(252, 80, 0); */
+  /* position: absolute; */
 }

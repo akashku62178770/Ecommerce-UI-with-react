@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import LoggedIn from "./Loggedin";
 import { getToken, storeToken } from "../../services/LocalStorageService";
 import ellipse from "../../assets/Ellipse.png";
-import { CartContext, UserContext } from "../../Context";
+import { CartContext, UserContext } from "../../context/Context";
 // const Navbar: FC<{ signin: () => void; register: () => void }> = ({
 //   signin,
 //   register,
@@ -24,8 +24,6 @@ const Navbar = ({ signin, register }) => {
       color: isActive ? "black" : "#876156",
     };
   };
-
- 
 
   //
   return (
@@ -50,7 +48,7 @@ const Navbar = ({ signin, register }) => {
                   Home
                 </NavLink>
               </li>
-             
+
               <li>
                 <NavLink
                   to="/orderpage"

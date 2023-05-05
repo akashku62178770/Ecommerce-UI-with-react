@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { CartContext, UserContext } from "../Context";
+import { CartContext, UserContext } from "../context/Context";
 import OrderPage from "./OrderPage";
 import OrderPopup from "./OrderPopup";
 import { getToken } from "../services/LocalStorageService";

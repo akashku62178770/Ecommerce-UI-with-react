@@ -9,15 +9,17 @@ import { Alert, AlertTitle, Typography } from "@mui/material";
 import { setUserToken } from "../../features/authSlice";
 import { useDispatch } from "react-redux";
 import { useLoginUserMutation } from "../../services/userAuthApi";
+import signin from "../../assets/Signin.png";
 import {
   storeToken,
   getToken,
   removeToken,
 } from "../../services/LocalStorageService";
+import Register from "./Register";
 
 const Signin = ({ cancle, register }) => {
   const [showPassword, setShowPassword] = useState(false);
-  // const status = useAppSelector((state) => state.status);
+  // const status = useAppSelect((state) => state.status);
   const [server_error, setServerError] = useState({});
 
   const navigate = useNavigate();
@@ -32,9 +34,9 @@ const Signin = ({ cancle, register }) => {
     };
     const res = await loginUser(actualData);
     if (res.error) {
-      console.log(res.error);
-      console.log(res.error.data.errors);
-      setServerError(res.error.data.errors);
+      console.log("error1", res.error.data);
+      // console.log("error2", res.error.data.errors);
+      setServerError(res.error.data);
     }
     if (res.data) {
       // console.log(typeof res.data);
@@ -52,19 +54,26 @@ const Signin = ({ cancle, register }) => {
   }, [access_token, dispatch]);
 
   // const submitSignin = () => {
-    
+
   // }
 
   return (
     <div className="bg-black/70 w-[100vw] h-[100vh] fixed z-40 flex justify-center items-center animate-slowfade ">
-      <div className="bg-veryLightBrown relative rounded-xl p-10">
+      <div
+        className="bg-veryLightBrown relative rounded-xl p-10"
+        style={{
+          backgroundImage: `url(${signin})`,
+          backgroundSize: "cover",
+          backgroundColor: "transparent",
+        }}
+      >
         <button
           className="absolute right-0 top-0 hover:border border-brown hover:bg-white rounded-full m-2 transition"
           onClick={cancle}
         >
           <CloseIcon className="text-4xl text-brown text-center  " />
         </button>
-        <h1 className="font-roboto text-brown text-4xl my-5 text-center">
+        <h1 className="font-roboto text-white text-4xl my-5 text-center">
           Sign In
         </h1>
         <form
@@ -76,20 +85,22 @@ const Signin = ({ cancle, register }) => {
             name="username"
             placeholder="username"
             className="sm:w-[20rem] w-[18rem]  border-brown outline-none border p-4 rounded-md text-brown"
+            style={{ backgroundColor: "transparent" }}
           />
-          {/* {server_error.username ? (
+          {server_error.username ? (
             <Typography style={{ fontSize: 12, color: "red", paddingLeft: 10 }}>
               {server_error.username[0]}
             </Typography>
           ) : (
             ""
-          )} */}
+          )}
           <div className="relative">
             <input
               type={`${!showPassword ? "password" : "text"}`}
               name="password"
               placeholder="password"
               className="sm:w-[20rem] w-[18rem] border-brown outline-none border p-4 rounded-md text-brown"
+              style={{ backgroundColor: "transparent" }}
             />
             {!showPassword ? (
               <VisibilityIcon
@@ -102,7 +113,7 @@ const Signin = ({ cancle, register }) => {
                 onClick={() => setShowPassword(false)}
               />
             )}
-            {/* {server_error.password ? (
+            {server_error.password ? (
               <Typography
                 style={{ fontSize: 12, color: "red", paddingLeft: 10 }}
               >
@@ -110,32 +121,42 @@ const Signin = ({ cancle, register }) => {
               </Typography>
             ) : (
               ""
-            )} */}
+            )}
           </div>
-          {/* {status.success && (
-            <p className="text-green  text-center">{status.success_message}</p>
-          )}
-          {status.error && (
-            <p className="text-red  text-center">{status.error_message}</p>
-          )}
-          {status.loading && <Loader />} */}
-          <Link to={""} className="text-brown hover:text-darkBrown">
+
+          <Link
+            to={""}
+            className="text-brown hover:text-darkBrown"
+            style={{ color: "#DABD99C7" }}
+          >
             Forgot password?
           </Link>
           <button
             type="submit"
             className="bg-darkBrown hover:scale-105 px-10 py-2 font-roboto text-white rounded-lg font-bold hover:bg-brown transition text-lg "
-            // onClick={isLoading ? <AlertTitle>signed in</AlertTitle>: ""}
+            // onSubmit={console.log("submit")}
+            // onClick={() => {
+            //   isLoading ? <AlertTitle>signed in</AlertTitle> : "";
+            // }}
           >
             Sign In
           </button>
-          {/* <button onClick={register} className="bg-darkBrown hover:scale-105 px-10 py-2 font-roboto text-white rounded-lg font-bold hover:bg-brown transition text-lg ">
-            Or Create Account
-          </button> */}
-          <Link to={"/register"} className="text-brown hover:text-darkBrown">
-            Or Create Account
-          </Link>
+          {server_error.detail ? (
+            <Alert severity="error">{server_error.detail}</Alert>
+          ) : (
+            ""
+          )}
+          
+          {/* <Link to={"/register"} className="text-white hover:text-darkBrown">
+            Or <span style={{ color: "#DABD99C7" }}>Create Account</span>
+          </Link> */}
         </form>
+        <button
+            onClick={() => <Register register={register} />}
+            className=" hover:scale-105 px-10 py-2 font-roboto text-white rounded-lg  transition text-lg "
+          >
+            Or <span style={{ color: "#DABD99C7" }}>Create Account</span>
+          </button>
       </div>
     </div>
   );

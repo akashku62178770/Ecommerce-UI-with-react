@@ -45,18 +45,15 @@ const Related = () => {
         ))} */}
         {dresses.map((dress, index) => (
           <div key={index}>
-            <img
+            {/* <img
               src={dress.images[0].image}
               alt={`occa_dress ${dress.id}`}
               className="w-[450px]"
-            />
-            <Card
+            /> */}
+         <Card
               index={index}
-              title={dress.title}
+              image={dress.images[0].image}
               dress={dress}
-              sale_price={dress.sale_price}
-              rent_price={dress.rent_price}
-              quantity={dress.available_quantity}
             />
           </div>
         ))}

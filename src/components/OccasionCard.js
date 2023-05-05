@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Fade } from "react-slideshow-image";
 import { HabeshaDress } from "../models/habesha-dress";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
-import { UserContext, CartContext } from "../Context";
+import { UserContext, CartContext } from "../context/Context";
 import ProductDetails from "../pages/ProductDetails";
 import { useGetLoggedUserQuery } from "../services/userAuthApi";
 import { getToken } from "../services/LocalStorageService";
@@ -75,18 +75,18 @@ const OccasionCard = ({ index, image, dress }) => {
             </div>
           </div>  
            )} */}
-          {isOverImg ? (
+          {isOverImg ? ( 
             <div
-              className="w-[25rem] h-[25rem] occasionType border-lg"
+              className="w-[25rem] h-[25rem]  border-lg"
               style={{ backgroundImage: `url(${image})` }}
             >
               <div
-                className="flex-container flex-col gap-2 "
+                className="flex-container flex-col gap-2 occasionType"
                 style={{
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  backgroundColor: "rgba(218, 189, 153, 0.55);"
+                  backgroundColor: "rgba(218, 189, 153, 0.55) "
                 }}
               >
                 <h1 className="absolute text-lg top-10 py-12 text-brown" style={{fontWeight: "bold", fontSize: 38}}> {dress.occasion[0].title} 's</h1>

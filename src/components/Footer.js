@@ -28,7 +28,7 @@ const Footer = () => {
 
     return result;
   };
-  verifyToken()
+  // verifyToken()
   const [isVerified, setIsVerified] = useState(false);
   const [phone, setPhone] = useState("");
   const handleVerify = (token: any) => {

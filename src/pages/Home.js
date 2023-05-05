@@ -10,21 +10,21 @@ import { getToken, storeToken } from "../services/LocalStorageService";
 const Home = () => {
   const { refresh_token } = getToken();
 
-  if (refresh_token !== null) {
-    fetch("https://api.awsugn.biz/auth/jwt/refresh", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ refresh: refresh_token }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("token refreshed:", data);
-        storeToken(data);
-      })
-      .catch((error) => console.log("error", error));
-  }
+  // if (refresh_token !== null) {
+  //   fetch("https://api.awsugn.biz/auth/jwt/refresh", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ refresh: refresh_token }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log("token refreshed:", data);
+  //       storeToken(data);
+  //     })
+  //     .catch((error) => console.log("error", error));
+  // }
 
   return (
     <div>

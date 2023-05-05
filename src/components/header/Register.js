@@ -16,7 +16,7 @@ import Loader from "../Loader";
 import { Typography, Alert } from "@mui/material";
 import { useRegisterUserMutation } from "../../services/userAuthApi";
 
-const Register = ({ cancleRegister }) => {
+const Register = ({  cancleRegister }) => {
   const [phone_number, setPhone] = useState("");
   const [agree, setAgree] = useState(false);
   const [error, setError] = useState("");

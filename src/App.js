@@ -10,18 +10,22 @@ import Register from "./components/header/Register";
 import Ordering from "./pages/Ordering";
 import OrderPage from "./pages/OrderPage";
 import OrderDetails from "./pages/OrderDetails";
-import { CartContext } from "./Context";
+import { CartContext } from "./context/Context";
 import { useState } from "react";
 import Cart from "./pages/Cart";
 import { useSelector } from "react-redux";
 import Profile from "./pages/Profile";
+import SigninPopup from "./components/header/SigninPopup";
+import { AppProvider } from "./context/productContext";
 const checkCart = localStorage.getItem("cartData");
 
 function App() {
   const [cartData, setCartData] = useState(JSON.parse(checkCart));
+  // const [cartData, setCartData] = useState(JSON.parse(checkCart));
   const { access_token } = useSelector((state) => state.auth);
   return (
     <CartContext.Provider value={{ cartData, setCartData }}>
+      <AppProvider> 
       {/* <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />} />
@@ -41,6 +45,7 @@ function App() {
           <Route path="/aboutus" element={<Aboutus />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/signinpopup" element={<SigninPopup />} />
           {/* <Route path="/register" element={!access_token ?<Register />:<Navigate to="/"} />  */}
           <Route path="/ordering" element={<Ordering />} />
           <Route path="/cart" element={<Cart />} />
@@ -49,6 +54,7 @@ function App() {
           <Route path="/product-detail" element={<ProductDetails />} />
         </Routes>
       </BrowserRouter>
+      </AppProvider>
     </CartContext.Provider>
   );
 }

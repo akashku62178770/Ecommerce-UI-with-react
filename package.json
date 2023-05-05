@@ -42,6 +42,7 @@
     "react-simple-image-slider": "^2.4.1",
     "react-slideshow-image": "^4.2.1",
     "redux": "^4.2.1",
+    "styled-components": "^5.3.10",
     "web-vitals": "^2.1.4",
     "yup": "^1.1.1"
   },

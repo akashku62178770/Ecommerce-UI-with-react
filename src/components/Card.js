@@ -3,10 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { Fade } from "react-slideshow-image";
 import { HabeshaDress } from "../models/habesha-dress";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
-import { UserContext, CartContext } from "../Context";
+import { UserContext, CartContext } from "../context/Context";
 import ProductDetails from "../pages/ProductDetails";
 import { useGetLoggedUserQuery } from "../services/userAuthApi";
 import { getToken } from "../services/LocalStorageService";
+import SigninPopup from "./header/SigninPopup";
+import { Button } from "@mui/material";
 
 const Card = ({ index, image, dress }) => {
   const [isOverImg, setIsOverImg] = useState(false);
@@ -17,6 +19,17 @@ const Card = ({ index, image, dress }) => {
   const { cartData, setCartData } = useContext(CartContext);
   const { data, isSuccess } = useGetLoggedUserQuery(access_token);
 
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+    //  navigate("/signinpopup");
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    navigate("/");
+  };
   // const postCartData = async (cartid) => {
   //   // console.log("iddata1", cartid)
   //   // cartid =  "cartid"
@@ -144,9 +157,9 @@ const Card = ({ index, image, dress }) => {
           </div>
         </Fade>
       </div>
-      <h1 className="font-yatra  text-2xl text-center text-darkBrown">
+      {/* <h1 className="font-yatra  text-2xl text-center text-darkBrown">
         {dress.id}
-      </h1>
+      </h1> */}
       <h1 className="font-yatra  text-2xl text-center text-darkBrown">
         {dress.title}
       </h1>
@@ -154,21 +167,44 @@ const Card = ({ index, image, dress }) => {
         Quantity: {dress.quantity}
       </p>
       <p className="text-center font-light font-montserrat text-brown text-xl">
-        <s>{dress.sale_price} Birr</s>
+        <s>{dress.sale_price} Br</s>
       </p>
 
       <p className="text-center  text-3xl text-darkBrown">
-        {dress.rent_price} Birr
+        {dress.rent_price} Br
       </p>
       <div className="flex justify-center">
-        <button
-          className="bg-darkBrown hover:bg-brown  text-white py-3 w-[10rem] rounded-lg transition font-bold text-xl mb-10 mx-5"
-          type="button"
-          onClick={addClicked}
-        >
-          Add to Cart
-          <i className="fa-solid fa-cart-plus ms-2"></i>
-        </button>
+        {access_token ? (
+          // <button
+          //   className="bg-darkBrown hover:bg-brown  text-white py-3 w-[10rem] rounded-lg transition font-bold text-xl mb-10 mx-5"
+          //   type="button"
+          //   onClick={addClicked}
+          // >
+          <Button
+            variant="contained"
+            onClick={addClicked}
+            
+            style={{ backgroundColor: "#876156" }}
+          >
+            Add to Cart
+            <i className="fa-solid fa-cart-plus ms-2"></i>
+          </Button>
+        ) : (
+          // <button
+          //   className="bg-darkBrown hover:bg-brown  text-white py-3 w-[10rem] rounded-lg transition font-bold text-xl mb-10 mx-5"
+          //   type="button"
+          //   onClick={handleOpen}
+          // >
+          <Button
+            variant="contained"
+            onClick={handleOpen}
+            style={{ backgroundColor: "#876156" }}
+          >
+            Add to Cart
+            <i className="fa-solid fa-cart-plus ms-2"></i>
+          </Button>
+        )}
+        <SigninPopup open={open} handleClose={handleClose} />
         {/* <AddShoppingCartOutlinedIcon/> */}
         {/* <FontAwesomeIcon icon="fa-solid fa-cart-plus" /> */}
       </div>
