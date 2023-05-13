@@ -39,6 +39,16 @@ const HiddenMenu = ({closeMenu, signin, register, refresh }) => {
         >
           About Us
         </NavLink>
+        {/* <button
+          className="text-brown hover:scale-125 hover:text-darkBrown transition text-lg"
+          onClick={() => {
+            signin();
+            closeMenu();
+            refresh()
+          }} 
+        >
+          Sign in
+        </button>  */}
         <button
           className="text-brown hover:scale-125 hover:text-darkBrown transition text-lg"
           onClick={() => {

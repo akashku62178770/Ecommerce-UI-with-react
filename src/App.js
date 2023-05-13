@@ -17,21 +17,26 @@ import { useSelector } from "react-redux";
 import Profile from "./pages/Profile";
 import SigninPopup from "./components/header/SigninPopup";
 import { AppProvider } from "./context/productContext";
+import OccasionPage from "./pages/OccasionPage";
+import { FilterContextProvider } from "./context/filter_context";
 const checkCart = localStorage.getItem("cartData");
 
 function App() {
   const [cartData, setCartData] = useState(JSON.parse(checkCart));
   // const [cartData, setCartData] = useState(JSON.parse(checkCart));
   const { access_token } = useSelector((state) => state.auth);
+  
   return (
     <CartContext.Provider value={{ cartData, setCartData }}>
       <AppProvider> 
+        <FilterContextProvider>
       {/* <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />} />
           <Route index element={<Home />} />
         </Routes>
       </BrowserRouter> */}
+     
       <BrowserRouter>
         <Header />
         <SideLinks />
@@ -44,16 +49,18 @@ function App() {
           </Route>
           <Route path="/aboutus" element={<Aboutus />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/signinpopup" element={<SigninPopup />} />
-          {/* <Route path="/register" element={!access_token ?<Register />:<Navigate to="/"} />  */}
+          <Route path="/register" element={!access_token ?<Register />:<Navigate to="/"/>} /> 
           <Route path="/ordering" element={<Ordering />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/occasions" element={<OccasionPage />} />
           <Route path="/orderpage" element={<OrderPage />} />
           <Route path="/orderdetails/:order_code" element={<OrderDetails />} />
-          <Route path="/product-detail" element={<ProductDetails />} />
+          {/* <Route path="/product-detail" element={<ProductDetails />} /> */}
+
         </Routes>
       </BrowserRouter>
+      </FilterContextProvider>
       </AppProvider>
     </CartContext.Provider>
   );

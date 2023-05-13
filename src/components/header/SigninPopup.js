@@ -27,7 +27,7 @@ import {
 import { setUserToken } from "../../features/authSlice";
 import Register from "./Register";
  
-const SigninPopup = ({ open, handleClose }) => {
+const SigninPopup = ({ handleOpen , handleClose }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [server_error, setServerError] = useState({});
@@ -64,9 +64,14 @@ useEffect(() => {
 
 }, [access_token, dispatch])
   
+// const handleOpen = () => {}
+// const handleClose = () => {
+  
+// }
+
   return (
     
-    <Dialog  open={open} onClose={handleClose}  
+    <Dialog  open={handleOpen } onClose={handleClose}  
     style={{border: "round"}}
    >
     

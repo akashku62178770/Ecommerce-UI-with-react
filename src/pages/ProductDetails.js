@@ -119,7 +119,7 @@ const ProductDetails = () => {
         </div>
       </div>
       <div className="border-t-2 border-rectangleBrown mt-20 relative -z-10">
-        <img src={topRectangle} className=" w-[10rem] sm:w-[15rem]" />
+        <img src={topRectangle} alt="Review" className=" w-[10rem] sm:w-[15rem]" />
         <p className="font-roboto text-white absolute z-10 top-1 sm:top-2 left-7 text-xl sm:text-3xl">
           Review
         </p>

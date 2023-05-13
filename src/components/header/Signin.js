@@ -45,7 +45,7 @@ const Signin = ({ cancle, register }) => {
       storeToken(res.data);
       let { access_token } = getToken();
       dispatch(setUserToken({ access_token: access_token }));
-      navigate("/");
+      cancle()
     }
   };
   let { access_token } = getToken();

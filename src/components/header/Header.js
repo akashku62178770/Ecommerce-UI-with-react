@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import awsugn_icon from "../../assets/new_awsugn.png";
-
+import icon from "../../assets/dark-logo.tiff"
 import MenuIcon from "@mui/icons-material/Menu";
-
+import logo from "../../assets/logo.png"
 import HiddenMenu from "./HiddenMenu";
 import Navbar from "./Navbar";
 import SignIn from "./Signin";
@@ -60,11 +60,14 @@ const Header = () => {
       {register ? <Register cancleRegister={cancleRegister} /> : ""}
       {signin ? <SignIn cancle={cancleSignin} /> : ""}
       <header className="flex justify-between items-center h-20 px-5 md:px-10">
+        {/* <NavLink to="/"> */}
         <img
-          src={awsugn_icon}
+          // src={awsugn_icon}
+          src={logo}
           alt=""
           className="w-[8rem] md:w-[10rem] mr-[8%] lg:mr-[16%] xl:mr-[25%] 2xl:mr-[30%]"
         />
+        {/* </NavLink> */}
         <Navbar signin={signInClicked} register={registerClicked} />
         <button className="block md:hidden" onClick={openMenu}>
           Menu: <MenuIcon className="text-4xl text-brown" />

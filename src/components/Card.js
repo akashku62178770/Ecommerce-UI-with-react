@@ -19,16 +19,17 @@ const Card = ({ index, image, dress }) => {
   const { cartData, setCartData } = useContext(CartContext);
   const { data, isSuccess } = useGetLoggedUserQuery(access_token);
 
-  const [open, setOpen] = useState(false);
+  const [openSignIn, setOpenSignIn] = useState(false);
 
-  const handleOpen = () => {
-    setOpen(true);
+
+  const openSignin = () => {
+    setOpenSignIn(true);
     //  navigate("/signinpopup");
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    navigate("/");
+  const signinClose = () => {
+    setOpenSignIn(false);
+    // navigate("/");
   };
   // const postCartData = async (cartid) => {
   //   // console.log("iddata1", cartid)
@@ -197,14 +198,14 @@ const Card = ({ index, image, dress }) => {
           // >
           <Button
             variant="contained"
-            onClick={handleOpen}
+            onClick={openSignin}
             style={{ backgroundColor: "#876156" }}
           >
             Add to Cart
             <i className="fa-solid fa-cart-plus ms-2"></i>
           </Button>
         )}
-        <SigninPopup open={open} handleClose={handleClose} />
+        {/* <SigninPopup handleOpen={openSignin} handleClose={signinClose} /> */}
         {/* <AddShoppingCartOutlinedIcon/> */}
         {/* <FontAwesomeIcon icon="fa-solid fa-cart-plus" /> */}
       </div>

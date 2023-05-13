@@ -60,8 +60,7 @@ const Cart = () => {
       },
       body: JSON.stringify(cartItems),
     }).then((response) =>
-      response
-        .json()
+      response.json()
         .then((data) => {
           console.log("cart data?", data);
           console.log("cartid?", cartid);

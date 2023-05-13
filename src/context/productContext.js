@@ -4,7 +4,7 @@ import reducer from "../reducer/productReducer";
 
 const AppContext = createContext();
 
-const API = "https://api.awsugn.biz/clothes";
+const API = "https://api.awsugn.biz/clothes/";
 
 const initialState = {
   isLoading: false,
