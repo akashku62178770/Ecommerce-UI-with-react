@@ -35,6 +35,8 @@ const Register = ({ cancleRegister }) => {
   // const status = useAppSelector((state) => state.status);
   // const dispatch = useAppDispatch();
   const [server_error, setServerError] = useState({});
+  const [phone_error, setPhoneError] = useState(false);
+  const [otp_error, setOtpError] = useState(false);
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -92,48 +94,57 @@ const Register = ({ cancleRegister }) => {
     }
   };
 
-  const handlePhone = async () => {
-    var phoneField = document.querySelector("#phoneField");
-    var otpField = document.querySelector("#otpField");
+  const handlePhone = async (e) => {
+    e.preventDefault();
+    console.log(phone_number)
+    if (phone_number){
+      var phoneField = document.querySelector("#phoneField");
+      var otpField = document.querySelector("#otpField");
 
-    // btn.addEventListener("click", function() {
-    //   if (phoneField.style.display === "block") {
-    phoneField.style.display = "none";
-    otpField.style.display = "block";
-    await fetch("https://api.awsugn.biz/send_otp/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({"to":phone_number}),
-    })
-    .then((response) => {
-      if (response.ok) {
-        // Success response handling
-        
-        console.log("OTP verified successfully!");
-        console.log(response)
-        console.log(response.data)
-      } else {
-        // Error response handling
-        // console.log(error)
-        console.log("Error in phone!");
+      // btn.addEventListener("click", function() {
+      //   if (phoneField.style.display === "block") {
+      phoneField.style.display = "none";
+      otpField.style.display = "block";
+      
+      await fetch("https://api.awsugn.biz/send_otp/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({"to":phone_number}),
+      })
+      .then((response) => {
+        if (response.ok) {
+          // Success response handling
+          
+          console.log("OTP verified successfully!");
+          console.log(response)
+          console.log(response.data)
+        } else {
+          // Error response handling
+          // console.log(error)
+          console.log("Error in phone!", response);
+          setPhoneError("This Field is required")
+        }
+      })
+      .catch((error) => {
+        // Network error handling
+        console.error("Network error:", error);
+      });
+  
+        // .then((response) => {
+        //    await response.json();
+        // })
+        // .then((data) => {
+        //   console.log(data);
+        // })
+        // .catch((error) => console.log("error", error));
+      }else{
+        setPhoneError(true)
       }
-    })
-    .catch((error) => {
-      // Network error handling
-      console.error("Network error:", error);
-    });
- 
-      // .then((response) => {
-      //    await response.json();
-      // })
-      // .then((data) => {
-      //   console.log(data);
-      // })
-      // .catch((error) => console.log("error", error));
-      console.log(phone_number);
   };
-  const handleOtp = () => {
-    var otpField = document.querySelector("#otpField");
+  const handleOtp = (e) => {
+    e.preventDefault();
+    if (code_number){
+      var otpField = document.querySelector("#otpField");
     var formField = document.querySelector("#formField");
     otpField.style.display = "none";
     formField.style.display = "block";
@@ -164,12 +175,16 @@ const Register = ({ cancleRegister }) => {
       // Network error handling
       console.error("Network error:", error);
     });
+    }
+    else {
+      setOtpError(true)
+    }
   };
 
   return (
     <div className="relative bg-black/70 w-[100vw] h-[100vh]  z-30 flex justify-center items-center animate-slowfade overflow-scroll my-auto">
       <div
-        className=" relative rounded-xl py-20 px-5 sm:px-10 mt-[30rem] w-[360px] sm:w-fit top+50"
+        className=" relative rounded-xl py-20 px-5 sm:px-10 mt-[30rem] w-[360px] sm:w-fit bottom-40"
         style={{
           backgroundImage: `url(${registerbg})`,
           backgroundSize: "cover",
@@ -189,11 +204,11 @@ const Register = ({ cancleRegister }) => {
         {/* phone number field  */}
         <div id="phoneField" style={{ display: "block" }}>
           <Box
-            // component="form"
-            // noValidate
+            component="form"
+            noValidate
             sx={{ mt: 1 }}
             id="phone-form"
-            // onSubmit={handlePhone}
+            onSubmit={handlePhone}
           > 
             <PhoneInput
               // className="rounded"
@@ -210,13 +225,14 @@ const Register = ({ cancleRegister }) => {
                 setPhone(phone);
               }}
             />
+            {phone_error && <p className="text-sm text-red">Phone Number cannot be Empty</p>}
             <Box textAlign="center">
               <Button
                 type="submit"
                 variant="contained"
                 sx={{ mt: 3, mb: 2, px: 5 }}
                 style={{ backgroundColor: "#876156" }}
-                onClick={handlePhone}
+                // onClick={handlePhone}
                 id="phoneVerify"
               >
                 Verify
@@ -235,11 +251,11 @@ const Register = ({ cancleRegister }) => {
         {/* <div className={`${isOpen ? "block" : "hidden"}`}> */}
         <div id="otpField" style={{ display: "none" }}>
           <Box
-            // component="form"
-            // noValidate
+            component="form"
+            noValidate
             sx={{ mt: 1 }}
             id="otp-form"
-            // onSubmit={handleOtp}
+            onSubmit={handleOtp}
           >
             <TextField
               className="border-brown"
@@ -255,7 +271,7 @@ const Register = ({ cancleRegister }) => {
               }}
               
             />
-    {!code_number &&<p className="text-red">This field cannot be empty</p>}
+    {otp_error &&<p className="text-red">This field cannot be empty</p>}
             
             <Box textAlign="center">
               <div className="flex">
@@ -271,7 +287,7 @@ const Register = ({ cancleRegister }) => {
                   variant="contained"
                   sx={{ mt: 3, mb: 2, px: 5, mx: 5 }}
                   style={{ backgroundColor: "#876156" }}
-                  onClick={handleOtp}
+                  // onClick={handleOtp}
                   // onSubmit={!code_number && <p className="text-red">This field cannot be empty</p>}
                 >
                   Login
@@ -282,14 +298,16 @@ const Register = ({ cancleRegister }) => {
         </div>
 
         {/* form 3 for user details  */}
-        <div className="flex">
+        <div className=" ">
           <form
             id="formField"
             onSubmit={handleSubmit}
-            className=" flex-col  justify-center items-center gap-2 "
+            className=" justify-center items-center gap-2 "
             style={{ display: "none" }}
           >
-            <input
+            {/* <div className="flex"> */}
+              <div className="flex-col">
+              <input
               type="text"
               name="username"
               placeholder="username"
@@ -473,6 +491,9 @@ const Register = ({ cancleRegister }) => {
             ) : (
               ""
             )}
+              </div>
+            {/* </div> */}
+   
           </form>
         </div>
       </div>
